@@ -1,0 +1,71 @@
+<app-header-bar [title]="action + ' Umoor'" [hideButton]="true" ></app-header-bar>
+
+<div class="add_department_form">
+  <div class="department_form">
+      <form [formGroup]="umoorForm">
+          <div fxLayout="row" fxLayoutAlign="start center">
+              <div fxFlex="25">
+                <div class="input_box">
+                    <label for="exampleInputEmail1">Umoor Name <span class="astrick">*</span></label>
+                    <mat-form-field apperance="fill">
+                    <input matInput type="search" autocomplete="off" class="input-control" formControlName="umoorName" required>
+                    <mat-error  *ngIf="!f.umoorName.valid">Umoor {{validationMessages.umoorName}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+              <div fxFlex="25">
+                <div class="input_box">
+                    <label for="exampleInputEmail1">Description</label>
+                    <mat-form-field apperance="fill">
+                    <input matInput type="search" autocomplete="off" class="input-control" formControlName="shortDesc">
+                    <mat-error  *ngIf="!f.shortDesc.valid">{{validationMessages.shortDesc}}</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxFlex="25">
+                <div class="input_box">
+                    <label for="exampleInputEmail1">Email Id</label>
+                      <mat-form-field apperance="fill">
+                      <input matInput type="search" autocomplete="off" class="input-control" formControlName="emailId">
+                      <mat-error  *ngIf="!f.emailId.valid" >{{validationMessages.emailId}}</mat-error>
+                    </mat-form-field>
+                </div>
+              </div>
+              <div fxFlex="25">
+                  <div class="input_box">
+                    <label for="exampleInputEmail1">Phone No.</label>
+                    <mat-form-field apperance="fill">
+                        <input matInput type="search" autocomplete="off" class="input-control" formControlName="phoneNumber">
+                        <mat-error  *ngIf="!f.phoneNumber.valid">{{validationMessages.phone}}</mat-error>
+                  </mat-form-field>
+                  </div>
+              </div>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <div fxFlex="25">
+                <div class="input_box">
+                  <label for="exampleInputEmail1">Status <span class="astrick">*</span></label>
+                  <mat-form-field appearance="fill">
+                      <mat-select formControlName="userStatus" required>
+                        <mat-option *ngFor="let s of status" [value]="s.value">{{s.value | titlecase}}</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="!f.userStatus.valid" class="error">{{validationMessages.userStatus}}</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <div fxFlex="25">
+            <p class="imageuploadc">Upload Umoor Logo</p>
+            <app-upload-Image *ngIf="imageUpload$" (sendImageEvent)="sendImageEvent($event)" [imageUpload]="imageUpload$.asObservable()"></app-upload-Image>
+          </div>
+        </div>
+      </form>
+  </div>
+
+  <div class="botton_button">
+    <button  type="button" (click)="openDialog()" class="cancel_button submit_button">Cancel</button>
+    <button  type="button" (click)="onSubmit()" class="submit_button">Submit</button>
+  </div>
+</div>

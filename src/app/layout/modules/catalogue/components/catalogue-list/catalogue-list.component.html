@@ -1,0 +1,61 @@
+<app-header-bar  [path]="'/admin/catalogue/add'" [buttonName]="'Add Catalogue Item'" ></app-header-bar>
+<div class="heading_bar2">
+    <div class="report_tab catalogue-tab" *ngIf="(catalogueList$ | async)">
+        <mat-tab-group animationDuration="3ms"  >
+            <mat-tab label="Mumin">
+            <div class="add_department_form">
+                    <div class="department_form">
+                        <div fxLayout="row wrap" fxLayoutAlign="start">
+                            <div fxFlex.gt-sm="50%" fxFlex.gt-xs="100%"  fxFlex.gt-md="25%" *ngFor="let data of (catalogueList$ | async).MUMIN">
+                                <div class="card_view_catalogue">
+                                    <div class="view_icon" (click)="viewImage(data?.image_url)">
+                                        <span class="material-icons hover-text">aspect_ratio</span>
+                                        <!-- <mat-icon  class="mat-icon notranslate material-icons-outlined material-icons mat-icon-no-color" aria-hidden="true">explore</mat-icon> -->
+                                    </div>
+                                    <div class="edit_icon">
+                                        <mat-icon [routerLink]="'/admin/catalogue/edit/'+ encBtoa(data.id)" class="mat-icon notranslate material-icons-outlined action_icon material-icons mat-icon-no-color" aria-hidden="true">edit </mat-icon>
+                                    </div>
+                                    <div class="catalogue_circle" (click)="viewListMumin('MUMIN',data.id)">
+                                        <img [src]="data?.image_url?data?.image_url : imgPath" />
+                                    </div>
+                                    <h4>{{data.trophies || '-' }}</h4> 
+
+                                    <button class="cusortype">{{data.itemTitle.substring(0, 20) || '-' }}</button>
+
+                                    <!-- <button mat-button (click)="viewCatalog(data.itemTitle,data.trophies)">{{data.itemTitle.substring(0, 20) || '-' }}</button> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </mat-tab>
+            <mat-tab label="Approvers">
+             <div class="add_department_form">
+                    <div class="department_form">
+                        <div fxLayout="row wrap" fxLayoutAlign="start">
+                            <div fxFlex.gt-sm="50%" fxFlex.gt-xs="100%"  fxFlex.gt-md="25%" *ngFor="let data of (catalogueList$ | async).APPROVERS">
+                                <div class="card_view_catalogue">
+                                    <div class="view_icon" (click)="viewImage(data?.image_url)">
+                                        <!-- <img [src]="imgPath"  alt="" /> -->
+                                        <span class="material-icons hover-text">aspect_ratio</span>
+                                        <!-- <mat-icon  class="mat-icon notranslate material-icons-outlined material-icons mat-icon-no-color" aria-hidden="true">explore</mat-icon> -->
+                                    </div>
+                                    <div class="edit_icon">
+                                        <mat-icon [routerLink]="'/admin/catalogue/edit/'+ encBtoa(data.id)" class="mat-icon notranslate material-icons-outlined action_icon material-icons mat-icon-no-color" aria-hidden="true">edit </mat-icon>
+                                    </div>
+                                    <div class="catalogue_circle" (click)="viewListMumin('APPROVERS',data.id)">
+                                        <img [src]="data?.image_url?data?.image_url : imgPath" />
+                                    </div>
+                                    <h4>{{data.trophies || '-' }}</h4> 
+                                    <button mat-button>{{data.itemTitle.substring(0, 20) || '-' }}</button>
+                                    <!-- <button mat-button (click)="viewCatalog(data.itemTitle,data.trophies)">{{data.itemTitle.substring(0, 20) || '-' }}</button> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div> 

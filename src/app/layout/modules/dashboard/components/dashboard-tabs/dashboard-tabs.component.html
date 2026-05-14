@@ -1,0 +1,35 @@
+<div class="tab_wrap">
+  <div class="tab_wrap_content" >
+    <mat-tab-group [selectedIndex]="(selectedIx | async)" (selectedTabChange)="tabDetails($event)" animationDuration="0ms">
+      
+      <mat-tab *ngIf="(rolenameX | async) === 'Dept Head' ? false : true"  label="Umoor">
+        <ng-template matTabContent>
+        <app-bardashboard  [barData]="(getChartDataX | async)" ></app-bardashboard>
+        </ng-template>
+      </mat-tab>      
+      <mat-tab *ngIf="(rolenameX | async) === 'Umoor Coordinator' ? false : true"  [label]="(rolenameX | async) === 'Aamil' || (rolenameX | async) === 'Muavin Aamil' || (rolenameX | async) === 'Khidmat Ramadaniyah' ? 'Jamaat' : 'Jamiat'">
+        <ng-template matTabContent>
+          <div *ngIf="(getChartDataX | async) && (getChartDataX | async).length">
+              <map [coords]="(getChartDataX | async)"></map>
+          </div> 
+           
+         <div *ngIf="!((getChartDataX | async)  && (getChartDataX | async).length)" style="text-align: center;padding: 10%;font-weight: 500;">{{(spinner.visibility | async) === true ? '' : "No Data"}}
+        </div>
+        </ng-template>
+      </mat-tab>
+
+      <mat-tab *ngIf="(rolenameX | async) === 'Umoor Head' || (rolenameX | async) === 'Umoor Coordinator' ? false : true"  label="Department">
+        <ng-template matTabContent>
+        <app-bardashboard  [barData]="(getChartDataX | async)"></app-bardashboard>
+        </ng-template>
+      </mat-tab>
+      
+      <mat-tab label="Niyat">
+        <ng-template matTabContent>
+        <app-donut-charts [chartData]="(getChartDataX | async)"></app-donut-charts>
+        </ng-template>
+      </mat-tab>
+    
+    </mat-tab-group>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<div class="box">
+  <label class="hoverable" for="fileInput">
+    <img [src]="imagePath || '../assets/images/add_photo.svg'"> 
+    <span class="material-icons hover-text">add_photo_alternate</span>
+    <div class="background"></div>
+  </label>
+  <span class="material-icons hover-text-clear" *ngIf="imagePath" (click)="imageFullSize()">aspect_ratio</span>
+  <br/>
+  <input id="fileInput" accept="image/png, image/jpg, image/jpeg"  type='file' (change)="onSelectFile($event)">
+</div>

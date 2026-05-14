@@ -1,0 +1,256 @@
+<div *ngIf="!ValidItsId && action === 'Add'">
+    <div class="heading_bar">
+        <h1>{{action}} Niyat </h1>
+    </div>
+    <div class="add_department" *ngIf="isQrCode!=='true'">
+        <button (click)="redirectToDataList()" type="button">Back</button>
+    </div>
+    <form [formGroup]="itsIdForm" (keydown.enter)="onItsSubmit()">
+        <div class="add_department_form">
+            <div class="enter_id">
+                <div class="niyat_input wd_group">
+                    <div class="input_box">
+                        <label for="exampleInputEmail1">Please Enter ITS ID<span class="astrick">*</span></label>
+                        <mat-form-field apperance="fill">
+                            <input matInput type="search" autocomplete="off" class="input-control" formControlName="ItsId" required>
+                            <mat-error style="padding: 20px 0" *ngIf="!itsIdForm.controls.ItsId.valid" >{{validationMessages.ItsId}}</mat-error>    
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="niyat_input"><button  type="button" (click)="onItsSubmit()" class="submit_button">Submit</button></div>
+            </div>
+        </div>
+    </form>
+    <div class="clearfix"></div>
+</div>
+
+
+<div *ngIf="ValidItsId">
+    <div class="heading_bar">
+        <h1 *ngIf="ValidItsId && action==='QRCODE'"> Niyat Form</h1>
+        <h1 *ngIf="ValidItsId && action==='EDIT'">{{action}} Niyat </h1>
+        <h1 *ngIf="ValidItsId && action==='Add'">{{action}} Niyat </h1>
+        <h1 *ngIf="ValidItsId && action==='Clone'">{{action}} Niyat </h1>
+    </div>
+    <div class="add_department txt_lb pre_save">
+        <div class="download_file" *ngIf="isQrCode !== 'true'"><p>ITS Id - {{ValidItsId}}</p></div>
+        <div class="download_file" *ngIf="action =='QRCODE'"><p>ITS Id - {{ValidItsId}}</p></div>
+        <div class="download_file" *ngIf="action == 'Add'"><button (click)="BackToItsNiyat()"  type="button">Back</button> </div>
+        <div class="download_file" *ngIf="action == 'Clone'"><button (click)="BackToItsNiyat()"  type="button">Back</button> </div>
+        <div class="download_file" *ngIf="action == 'EDIT'"><button (click)="redirectToDataList()"  type="button">Back</button> </div>
+    </div>
+    <div class="add_department ">
+        
+    </div>
+    <div *ngIf="action == 'Add' || action == 'Clone'" class="add_department_form">
+        <div class="department_form">
+            <div class="lable_txt">
+                <p>
+                    Name
+                    <span>{{userName}}</span>
+                </p>
+            </div>
+            <div class="lable_txt">
+                <p>
+                    Jamiat
+                    <span>{{jamiyatName}}</span>
+                </p>
+            </div>
+            <div class="lable_txt">
+                <p>
+                    Jamaat
+                    <span>{{jamaatName}}</span>
+                </p>
+            </div>
+            <div class="lable_txt">
+                <p>
+                    Age
+                    <span>{{jamaatAge}}</span>
+                </p>
+            </div>
+            <div class="lable_txt">
+                <p>
+                    Mobile Number
+                    <span>{{jamiyatMobile}}</span>
+                </p>
+            </div>
+           
+            <div class="selct_niyat">
+                <div class="input_box">
+                    <label for="exampleInputEmail1">Select Niyat Template  <span class="astrick">*</span></label>
+                    <mat-form-field appearance="fill">
+                        <input type="text"
+                               placeholder="Search Template"
+                               aria-label="Niyat Template"
+                               matInput
+                               class="search-input-no-border"
+                               [formControl]="templateSearchControl"
+                               [matAutocomplete]="auto">
+                        <button mat-button *ngIf="templateSearchControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayTemplateFn" (optionSelected)="onTemplateSelected($event)">
+                          <mat-option *ngFor="let niyat of filteredTemplates | async" [value]="niyat">
+                            {{niyat.templateName}}
+                          </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    <mat-error style="padding: 10px 0" *ngIf="templateClicked && niyateDate!='' && !niyatQuestion.niyatQuest?.length">Sorry No Question(s) available in this template.</mat-error>
+                </div>
+            </div>
+            <div class="selct_niyat" *ngIf="templateClicked">
+                <div class="input_box_ca">
+                    <label>
+                      Date <span class="astrick">*</span>
+                    </label>
+                    
+                    <mat-form-field appearance="outline">
+                      <input
+                        matInput
+                        name="niyateDate"
+                        [matDatepicker]="dp3"
+                        [(ngModel)]="niyateDate"
+                        #dateCtrl="ngModel"
+                        [max]="maxDate"
+                        required
+                        placeholder="MM/DD/YYYY"
+                        #niyateDateInput
+                        autocomplete="new-password"
+                        (input)="validateDate(dateCtrl, niyateDateInput.value)"
+                        (blur)="validateDate(dateCtrl, niyateDateInput.value)"
+                        (change)="validateDate(dateCtrl, niyateDateInput.value)"
+                        (dateChange)="validateDate(dateCtrl, niyateDateInput.value)"
+                      />
+                    
+                      <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                      <mat-datepicker #dp3></mat-datepicker>
+                    
+                      <!-- Required -->
+                      <mat-error *ngIf="dateCtrl.errors?.['required']">
+                        Date is required
+                      </mat-error>
+                    
+                      <!-- Invalid format/date -->
+                      <mat-error *ngIf="dateCtrl.errors?.['invalidDate'] || dateCtrl.errors?.['matDatepickerParse']">
+                        Enter a valid date (MM/DD/YYYY)
+                      </mat-error>
+
+                      <!-- Future date -->
+                      <mat-error *ngIf="dateCtrl.errors?.['futureDate'] || dateCtrl.errors?.['matDatepickerMax']">
+                        Future date is not allowed
+                      </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="add_department_form" *ngIf="(templateClicked && isDateValid && niyatQuestion.niyatQuest?.length)|| isQrCode === 'true'">
+        <div class="prt30" #screen>
+        <div class="heading_texture">
+            <h2>Niyat Form</h2>            
+        </div>
+        <div class="add_department txt_lb pre_save finalSubmit">
+            <div class="download_file" *ngIf="isQrCode === 'true' && action ==='EDIT'"><p>ITS Id - {{ValidItsId}}</p></div>
+        </div>
+        <div class="questio_list">
+            <h4>List of Question</h4>
+        </div>
+       
+   
+        
+        <form [formGroup]="niyatForm">        
+            <div class="list_view">
+                <div *ngFor="let nq of niyatQuestion.niyatQuest; let i = index">
+                    <p>{{i+1}}. {{nq.questionenglish}} <span class="astrick">*</span></p>
+                    <p *ngIf="nq?.questionarabic!==null" class="pl">{{nq?.questionarabic}}</p>
+                    <div class="list_radio" *ngIf="nq.quesType == 'RADIO'">
+                        <mat-radio-group   formControlName="{{nq.id}}" aria-label="Select an option">
+                            <mat-radio-button value="1">Yes </mat-radio-button>
+                            <mat-radio-button value="2">No  </mat-radio-button>
+                            <mat-error style="padding: 10px 0"  *ngIf="formSubmitted && !niyatForm.controls[nq.id].valid"> Please choose an option</mat-error>                  
+                        </mat-radio-group>
+                    </div>
+                    <div class="list_radio" *ngIf="nq.quesType == 'CHECKBOX'">
+                        <mat-radio-group   formControlName="{{nq.id}}" aria-label="Select an option">
+                            <mat-radio-button value="1">Yes </mat-radio-button>
+                            <mat-radio-button value="2">No  </mat-radio-button>
+                            <mat-error style="padding: 10px 0"   *ngIf="!niyatForm.controls[nq.id].valid"> Please choose an option</mat-error>                  
+                        </mat-radio-group>
+                    </div>
+                    <div class="input_box" *ngIf="nq.quesType == 'UNIT'">
+                        <input matInput type="number" oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"  min="0" formControlName="{{nq.id}}" class="input-control" id=""   placeholder="" autocomplete="off">
+                        <mat-error style="padding: 10px 0"  *ngIf="formSubmitted && !niyatForm.controls[nq.id].valid"> Answer is required as numeric</mat-error>                  
+                    </div>
+                    <div class="input_box" *ngIf="nq.quesType == 'TEXT'">
+                        <input matInput type="text" formControlName="{{nq.id}}" class="input-control" id=""   placeholder="">
+                        <mat-error style="padding: 10px 0"  *ngIf="formSubmitted && !niyatForm.controls[nq.id].valid"> Answer is required</mat-error>                  
+                    </div>
+                    <div class="input_box" *ngIf="nq.quesType == 'Decimal'">
+                        <input matInput type="number" formControlName="{{nq.id}}" class="input-control" id=""   placeholder="">
+                        <mat-error style="padding: 10px 0"  *ngIf="formSubmitted && !niyatForm.controls[nq.id].valid"> Answer is required as decimal</mat-error>   
+                        <!-- <mat-error style="padding: 10px 0"  *ngIf="!niyatForm.controls[nq.id].errors.pattern"> Answer is fdgdfrequired as decimal</mat-error>                 -->
+                    </div>
+                   
+                    <div class="input_box" *ngIf="nq.quesType == 'AMOUNT'">
+                        <input matInput type="number" oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"  min="0" formControlName="{{nq.id}}" class="input-control" id=""   placeholder="" autocomplete="off">
+                        <mat-error style="padding: 10px 0"  *ngIf="formSubmitted && !niyatForm.controls[nq.id].valid"> Answer is required as numeric</mat-error>                  
+                    </div>
+                    <div class="input_box" *ngIf="nq.quesType == 'INTEGER'">
+                        <input matInput type="number" oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" min="0" formControlName="{{nq.id}}" class="input-control" id=""   placeholder="" autocomplete="off">
+                        <mat-error style="padding: 10px 0"  *ngIf="formSubmitted && !niyatForm.controls[nq.id].valid"> Answer is required as numeric</mat-error>                  
+                    </div>
+                </div>
+                <div class='flex' *ngIf="isFileUpload !==true && action!=='QRCODE'">
+                    <p class="imageuploadc">Upload Niyat Scan Copy <span class="astrick">*</span></p>
+                    <span class="card">
+                        <span #container *ngFor="let product of products; let indexOfelement=index" class="viewImgContainer">
+                           <span class="positinRelative">
+                                <ng-image-slider [images]="product.images" [imagePopup]="true" [manageImageRatio]="false"
+                                  [imageSize]="{width: container.offsetWidth, height: container.offsetWidth, space:0}">
+                                </ng-image-slider>
+                            <span class="removeImg" (click)="removeImg(indexOfelement)"> <img [src]="'../assets/images/delete.png'" alt=""> </span>
+                           </span> 
+                        </span>
+                      
+                       
+
+                   </span>
+                  
+                    <span class="add" *ngIf="imgLenght<2">
+                       
+                      <label for="upload">
+                        <img [src]="'../assets/images/add_photo.svg'" alt=""> 
+                            <input type='file' accept="image/png, image/jpg, image/jpeg" (change)="onSelectFile($event)" hidden id="upload">
+                      </label>
+                    </span>
+                </div>
+        </div>
+           
+        </form>
+        <div class="list_view">
+        <div *ngIf="isQrCode ==='true' && action!=='QRCODE'">
+            <p> Remarks</p>
+            <div class="input_box">
+                <input matInput type="text" class="input-control" id="" [(ngModel)]="remarks" placeholder="" autocomplete="off">
+            </div>
+        </div>
+    </div>
+      </div>
+        <div class="botton_button">
+           
+            <button type="button" (click)="redirectToDataList()" class="cancel_button submit_button">Cancel</button>
+            <button type="button"  class="submit_button mtblr" *ngIf="isQrCode === 'true' && action!=='QRCODE'" (click)="downloadAsPDF()">Download</button>
+            <button type="button" (click)="onSubmit()" class="submit_button">Submit</button>
+        </div>
+    </div>
+
+</div>
+
+   <div style="display: none;">
+    <img #canvas alt="">
+    <a #downloadLink></a>
+  </div>

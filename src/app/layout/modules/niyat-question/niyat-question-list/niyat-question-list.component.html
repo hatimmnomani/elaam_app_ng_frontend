@@ -1,0 +1,17 @@
+  <app-header-bar [title]="'Niyat Questions List'"  [path]="'/admin/niyat-question/add'" [buttonName]="'Add New Question'" ></app-header-bar>
+
+  <app-smart-search (searchEvent)="searchData($event)" [list]="searchList"></app-smart-search>
+
+  <div class="table_wrap">
+    <app-smart-table 
+    [columns]="columnsHeader" 
+    [receivedData]="filteredList"
+    (tableRecord)="fetchedRecord($event)"
+    [editBtn]="true"
+    [searchStr]="querymeter"
+    [statusBtn]="true"
+    [cloneBtn]="true">
+    
+  </app-smart-table>
+  </div>
+  

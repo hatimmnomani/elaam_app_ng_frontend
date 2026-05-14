@@ -1,0 +1,36 @@
+<div layout="row">
+    <app-header-bar [title]="'Mahad al Zahra Dashboard'"  [hideButton]="true"></app-header-bar>
+    
+    <app-month-section style="float: right;"  (messageEvent)="getDate($event)"></app-month-section>
+
+    <app-toggle-box *ngIf="niyatStatusList$" [status]="niyatStatusList$.asObservable()" (cardEvent)="getniyatDataBx($event)"></app-toggle-box>
+
+</div>
+<div class="add_department_form">
+      <div *ngIf="getChartData$ && getChartData$.length">
+          <map [coords]="getChartData$"></map>
+      </div> 
+     
+      <div *ngIf="!(getChartData$  && getChartData$.length)" class="chartAlignmentCss"> 
+        {{(spinner.visibility | async) == true ? '' : "No Data"}}
+    </div></div>
+<!-- Table  -->
+<div style="margin-top: 40px;">
+    <app-header-bar [title]="niyatStatusName + ' Niyats'"  [hideButton]="true"></app-header-bar>
+    <button *ngIf="showInfoIcons" type="button" style="float: right" (click)="backbutton()" class="submit_button">Back</button>
+    <app-smart-search (searchEvent)="searchData($event)" [list]="searchList"></app-smart-search>
+</div>
+  
+  <div class="table_wrap">
+    <app-smart-table
+    [columns]="columnsHeader"
+    [receivedData]="getListData"
+    (tableRecord)="fetchedRecord($event)"
+    [centerFocus]="showInfoIcons === true ? false : true"
+    [scan]="showInfoIcons"
+    [centerFocusinfo]="showInfoIcons"
+    [searchStr]="querymeter"
+    >
+    </app-smart-table>
+  </div>
+  

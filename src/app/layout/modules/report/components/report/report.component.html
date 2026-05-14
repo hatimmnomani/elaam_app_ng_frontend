@@ -1,0 +1,154 @@
+<div layout="row">
+  <app-header-bar [title]="'Report'" [hideButton]="true"></app-header-bar>
+  <app-month-section style="float: right;" [reportmonth]="isLimitedAccess ? undefined : 'reportThreeMonth'"  (messageEvent)="getDate($event)"></app-month-section>
+  <div class="clearfix"></div>
+  <div class="heading_bar">
+    <div class="report_tab">
+      <mat-tab-group [selectedIndex]="selectedIndex" (selectedTabChange)="tabDetails($event)" animationDuration="0ms">
+        <mat-tab *ngFor="let item of tabs" label="{{item}}">
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+  <div class="add_department pre_save">
+    <div class="download_file">
+      <app-download-files-button [dataList]="reportData$.asObservable()" [getHeader]="sendHeader"
+        [downloadtitle]="downloadButtonTitle" [getTableId]="sendTableId" [getTitle]="sendTitle" [buttonText]="'Reprt'"
+        [showCSV]="false" [getFileName]="sendFileName" (sendData)="downloadFileData()"></app-download-files-button>
+    </div>
+    <button *ngIf="userRole==='Super Admin'" class="bntAcknowledge submit_button" (click)="dynamicReport()">Dynamic Report</button>
+  </div>
+  <div class="report_row"  *ngIf="activeTab !== 'Approver Details';">
+    <div class="report_search">
+      <ng-container *ngIf="selectedIndex === 0; then normalsearch else dropdownsearch"></ng-container>
+      <ng-template #normalsearch>
+        <div class="top_search table_search">
+          <form class="example-form">
+              <mat-form-field class="example-full-width" appearance="fill">
+                  <input matInput [formControl]="searchControl" placeholder="{{tabPlaceholder}}" maxlength="8" autocomplete="off">
+                  <i class="search_icon"><mat-icon aria-hidden="false" aria-label="Example search icon">search</mat-icon></i>
+              </mat-form-field>
+          </form>
+      </div>
+      </ng-template>
+      <ng-template #dropdownsearch>
+        <app-smart-search #autoSearch (searchEvent)="searchData($event)" [list]="searchList" [placeholder]="tabPlaceholder" [value]="searchValue"></app-smart-search>
+      </ng-template>
+    </div>
+
+    <div class="select_act">
+      <mat-form-field>
+        <mat-select (selectionChange)="onChangeStatus($event)" [value]="obj.status">
+          <mat-option *ngFor="let s of status" [value]="s.id">{{s.value | titlecase}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="select_act">
+      <mat-form-field>
+        <mat-select (selectionChange)="advanceFilter($event)" [(value)]="selected">
+          <mat-option value="selectOne">Choose an option</mat-option>
+          <mat-option *ngFor="let s of advanceSearchKey" [value]="s.value">{{s.value | titlecase}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+
+    <div class="select_act mt_size" *ngIf="selected != 'selectOne'">
+      <form [formGroup]="advSearchForm">
+        <div class="" *ngIf="selectedFValue == 'By age'"> 
+          <div class="side_div">
+            <mat-form-field apperance="fill" floatLabel="never">
+                <input placeholder="Enter min age" type="number" min="0" max="100" matInput autocomplete="off" formControlName="minage">
+                <mat-error *ngIf="!f.minage.valid">{{validationMessages.maxAge}}</mat-error>
+                
+            </mat-form-field>
+          </div>
+          <div class="side_div">
+            <mat-form-field apperance="fill" floatLabel="never">
+              <input placeholder="Enter max age" type="number" min="0" max="100" matInput autocomplete="off" formControlName="maxage" (change)="checkAge(f.minage.value,f.maxage.value)">
+              <mat-error  *ngIf="!f.maxage.valid">{{validationMessages.minAge}}</mat-error>
+             
+              </mat-form-field>
+          </div>
+          <span>
+         <mat-error *ngIf="showMaxError">{{validationMessages.minMaxNumber}}</mat-error>
+        </span>
+          <div class="se_btn_wrap btn_tp">
+            <button type="button" (click)="onSubmit()" class="submit_button">Submit</button>
+          </div>
+        </div>
+
+        <div class="report_search top_select_bar" *ngIf="selectedFValue == 'By date'"> 
+          <div class="se_btn_wrap">
+            <mat-form-field appearance="fill">
+              <mat-date-range-input [rangePicker]="picker">
+                <input matStartDate formControlName="startDate" placeholder="Start date">
+                <input matEndDate formControlName="endDate" placeholder="End date">
+              </mat-date-range-input>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            
+              <mat-error *ngIf="!f.startDate.valid">Invalid start date</mat-error>
+              <mat-error *ngIf="!f.endDate.valid">Invalid end date</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="se_btn_wrap">
+            <button type="button" (click)="onSubmit()" class="submit_button">Submit</button>
+          </div>
+          
+        </div>
+      </form>  
+    </div>
+  </div>
+  <div class="report_row"  *ngIf="activeTab === 'Approver Details';">
+    <form [formGroup]="approverSearchForm">
+
+    <div class="select_act">
+      <mat-form-field>
+        <!-- <mat-label>Select Approver Roles</mat-label> -->
+        <mat-select  formControlName="roleId" (selectionChange)="selectJamiatList($event)" [(value)]="roleId">
+          <mat-option value="selectroleId">Select Approver Roles</mat-option>
+          <mat-option *ngFor="let s of approverRoles" [value]="s.id">{{s.value}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="select_act" *ngIf="roleId != 'selectroleId'">
+      <mat-form-field>
+        <mat-select formControlName="jamiatId" (selectionChange)="filerJamaatByJamiatID($event)" [(value)]="jamiatId">
+          <mat-option value="selectJamiat">Select Jamiat</mat-option>
+          <mat-option *ngFor="let s of jamiatList" [value]="s.id">{{s.jamiatName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="select_act" *ngIf="roleId !== 'selectroleId' && jamiatId !== 'selectJamiat'">
+      <mat-form-field>
+        <mat-select formControlName="jamaatId" [(value)]="jamaatId">
+          <mat-option value="selectJamaat">Select Jamaat</mat-option>
+          <mat-option *ngFor="let s of jamaatList" [value]="s.id">{{s.jamaatName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="select_act" *ngIf="roleId != 'selectroleId'">
+    <div class="se_btn_wrap">
+      <button type="button" (click)="onSearch()" class="submit_button">Search</button>
+    </div>
+  </div>
+  </form>
+  </div>
+  <!-- <div class="table_wrap">
+    <app-smart-table [columns]="columnsHeader" [receivedData]="getListData" [searchStr]="obj.search">
+    </app-smart-table>
+  </div> -->
+  <div class="table_wrap" *ngIf="showTable === true">
+    <app-report-side-smart-table
+      [columns]="columnsHeader"
+      [service]="reportService"
+      [columns]="columnsHeader"
+      [filters]="objJSONString"
+      (tableRecord)="getRecord($event)" >
+    </app-report-side-smart-table>
+  </div>
+  
+</div>

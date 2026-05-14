@@ -1,0 +1,33 @@
+.example-additional-selection {
+    opacity: 0.75;
+    font-size: 0.75em;
+  }
+  .pupup-div > div mat-form-field, .pupup-div > div mat-select{
+    min-width: 240px !important;
+    
+  }
+  .send_msg_popup{
+    min-width: 500px;
+    width: auto;
+  }
+
+  .department_form {
+    padding: 30px 20px 30px 20px;
+}
+
+.disPlay-flex{
+  display: flex;
+}
+.width100{
+  width: 100%;
+}
+.report_row .select_act {
+  display: inline-block;
+  margin-left: 0px !important;
+}
+.heading_bar h1{
+  color: #583702;
+  font-size: 20px;
+  font-weight: 500;
+}
+

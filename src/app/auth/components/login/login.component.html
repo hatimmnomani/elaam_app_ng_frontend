@@ -1,0 +1,142 @@
+<div class="page-login">
+    <div class="welcome_wrap_page" *ngIf="showlogin == 'onelogin'" >
+        <div class="welcome_heading">
+            <h1>Welcome to Elaam </h1>
+        </div>
+        <div class="logo_elam">
+            <img src="../assets/images/logo.png" alt="" />
+        </div>
+        <div class="welcome_txt">
+            <h4>ITS Authentication</h4>
+            <p>
+                You will need to authenticate on ITS52.com before you can access the content on Elaam portal.
+            </p>
+            <p>Please click below to proceed...</p>
+        </div>
+        <div class="btn_up">
+            <button type="button" class="submit_button" (click)="redirectTo3rdParty()">Click Here</button>
+        </div>
+    </div>
+
+    <div class="login_wrap" *ngIf="showlogin == 'simple'">
+        <div class="elaam_logo">
+            <a><img src="../assets/images/logo.png" alt="" /></a>
+        </div>
+        <div class="text_p">
+            <p>Welcome back. Please login to your account.</p>
+        </div>
+        <!----Login Form Start---->
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="login_form">
+                <div class="form_input mb-10">
+                    <mat-form-field appearance="fill">
+                        <mat-label>ITS ID</mat-label>
+                        <input type="search" autocomplete="off" matInput formControlName="itsId" [errorStateMatcher]="matcher" required>
+                        <mat-error *ngIf="!f.itsId.valid">{{validationMessages.itsId}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form_input">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Password</mat-label>
+                        <input [type]="hide ? 'password' : 'text'" autocomplete="password" type="password" matInput formControlName="password" [errorStateMatcher]="matcher" required>
+                        <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>                      
+                        <mat-error *ngIf="!f.password.valid">{{validationMessages.password}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="d-space-flex">
+                    <div class="remember_bar">
+                        <mat-checkbox (change)="showOptions($event)" [checked]="rememberCheckbox">
+                            Remember Me
+                        </mat-checkbox>
+                    </div>
+                    <div class="forgot_password">
+                        <a href="https://www.its52.com/Public/ForgotPassword.aspx" target="_blank" >Forgot Password?</a>
+                    </div>
+                </div>
+                <div *ngIf="cred" style="color: red;font-size: 16px;">
+                    Please enter valid itsId and password
+                </div>
+                <div class="clearfix"></div>
+                <div class="agree_text">
+                    <p>By logging in, you are agreeing Elaam’s T&C.</p>
+                </div>
+                <div class="form_input">
+                    <button type="submit" class="login_btn">LOGIN</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="copy_right_text" *ngIf="showlogin == 'onelogin' || showlogin == 'simple'">
+        <p>© Elaam {{getCurrentYear}} All rights reserved | About | <a class="copy_right_text" target="_blank" routerLink="/privacyPolicy">Privacy Policy</a> |
+      <a class="copy_right_text" routerLink="/safety" target="_blank">Safety</a>
+      </p>
+    </div>
+
+    <div class="elaam_logo" *ngIf="listSpinner">
+        <a><img src="../assets/images/logo.png" alt="" /></a>
+    </div>
+
+    <div class="role_swtich_tab" *ngIf="userHavingMultpleRole">
+        <div class="welcome_heading">
+            <h1>Welcome to Elaam </h1>
+        </div>
+        <div class="logo_elam">
+            <img src="../assets/images/logo.png" alt="" />
+        </div>
+        <div class="swtich_label">
+            <ul>
+                <li *ngFor="let item of userRoles" (click)="loginByRole(item.authority)">
+                    {{ 
+  item.authority === 'Aamil' 
+    ? 'Aamil Saheb' 
+    : item.authority === 'Muavin Aamil' 
+      ? 'Muawin Aamil Saheb' 
+      : item.authority 
+}}
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="help_link_number">
+   <div class="link_click" (click)="helpNumber()"><img src="../assets/images/support1.png" alt=""> Help Line Number</div>
+   <div class="numbers_box" *ngIf="help_number_show_hide">
+        <div class="box_top">
+            <div class="close_bts" (click)="closeHelp()"> <img src="../../../../assets//images/delete.png" alt=""></div>
+            <img src="../assets/images/support2.png" alt="">
+        </div>
+        <div class="box_bottom">
+            <div class="colling">
+                <img src="../assets/images/calling.png" alt=""> +919326179816
+            </div>
+            <div class="colling">
+                <img src="../assets/images/calling.png" alt=""> +919324625416
+            </div>
+            <!-- <div class="colling">
+                <img src="../assets/images/calling.png" alt=""> +919326173664
+            </div> -->
+            <div class="colling1">
+                <span>Timings(Mon-Sat)</span>
+            </div>
+            <div class="colling1">
+                <span>10:30 am to 1:30 pm(IST)</span>
+            </div>
+            <div class="colling1">
+                <span>2:30 pm to 6:30 pm(IST)</span>
+            </div>
+          
+        </div>
+        <div class="triangle-down"></div>
+   </div>
+</div>
+
+<ng-container *ngIf="listSpinner">
+    <div class="center-align-spinner">
+        <mat-spinner [diameter]="70" color="primary" mode="indeterminate"></mat-spinner>
+    </div>
+</ng-container>

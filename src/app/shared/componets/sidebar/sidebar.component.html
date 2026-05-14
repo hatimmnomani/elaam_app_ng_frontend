@@ -1,0 +1,23 @@
+
+
+<div class="sidebar">
+    <div class="logo">
+        <a (click)="navigatetoDefault()" *ngIf="isQrCode!=='true'"><img src="../assets/images/logo.png" alt="" style="cursor: pointer;" /></a>
+    </div>
+    <div class="menu_bar">
+        <ul>
+            <li *ngFor="let item of navLinks" [routerLinkActive]="item.route !== 'quiz' ? 'active' : ''" #rla="routerLinkActive" [ngStyle]="rla.isActive && item.route !== 'quiz' ? {'background-image': 'url(../assets/images/active_menu_bar.png)'} : {}" >
+                <a [routerLink]="item.route !== 'quiz' ? item.route : null" (click)="onNavClick(item)">
+                    <span *ngIf="!rla.isActive || item.route === 'quiz'"><img src='../assets/images/{{item.img}}' /></span>
+                    <span *ngIf="rla.isActive && item.route !== 'quiz'" class="img_active_2"><img
+                        src="../assets/images/{{item.actimg}}"
+                        /></span>
+                    {{item.name}}
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab_wrap">
+        <div class=""></div>
+    </div>
+</div>

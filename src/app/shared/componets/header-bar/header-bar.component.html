@@ -1,0 +1,7 @@
+<div class="heading_bar">
+  <h1 *ngIf="applyPipe">{{(title == 'Mahad al Zahra Dashboard' || title == 'HQHB Dashboard')?title:title | titlecase}}</h1>
+  <h1 *ngIf="!applyPipe">{{title}}</h1>
+</div>
+<div class="add_department" *ngIf="!hideButton">
+  <button type="button" class="add_department" (click)="route()"><span><img src="../assets/images/add_black_24dp.svg" alt=""/></span>{{buttonName | titlecase}}</button>
+</div>

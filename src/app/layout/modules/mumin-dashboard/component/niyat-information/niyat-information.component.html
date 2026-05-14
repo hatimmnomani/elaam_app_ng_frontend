@@ -1,0 +1,237 @@
+<!--start  Mumnin niyat information request for update -->
+<div class="heading_bar">
+    <h1>Niyat Information</h1>
+    <p *ngIf="userRole === 'Mumin'">This niyat is created by  <b>{{ (niyatInfoData)?niyatInfoData[0].name:'' }}</b></p>
+</div>
+<div class="add_department">
+    <button (click)="backtolocation()" type="button">Back</button>
+</div>
+<div class="add_department_form" *ngFor="let niyatInfo of (niyatLoading$ | async)">
+    <div class="niyat_info">
+        <p *ngIf="userRole !== 'Mumin'">Mumin Name :  <b>{{ (niyatInfoData)?niyatInfoData[0].name:'' }}</b></p>
+        <div class="clearfix"></div>
+
+        <div class="info_txt">
+            <h5> {{niyatInfo.niyatQuestionEnglish}} (Commited Value : {{commitedValue}})</h5>
+
+            <p style="font-weight: 500;">Trophy Rewards on Niyat Completion : <b>{{niyatInfo.trophiesToWon}}</b></p><br>
+           
+            <p style="font-weight: 500;">Niyat Fill Date (DD/MM/YYYY) <span>{{niyatInfo.niyatDate | date: 'dd/MM/yyyy'}}</span></p> 
+
+        </div>
+        <div class="info_wrap">
+            <div class="list_radio">
+                <mat-radio-group *ngIf="niyatInfo.questType == 'RADIO'" [(ngModel)]="requestStatus" aria-label="Select an option" [disabled]='true' >
+                    <mat-radio-button value="1">Yes </mat-radio-button>
+                    <mat-radio-button value="2">No </mat-radio-button>
+                </mat-radio-group>
+
+                <mat-radio-group *ngIf="niyatInfo.questType == 'CHECKBOX' " [(ngModel)]="requestStatus" aria-label="Select an option" [disabled]='true' >
+                    <mat-radio-button value="1">Yes </mat-radio-button>
+                    <mat-radio-button value="2">No </mat-radio-button>
+                </mat-radio-group>
+
+                <div class="input_box" *ngIf="niyatInfo.questType == 'UNIT'">
+                    <mat-form-field apperance="fill">
+                        <input matInput oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"  min="0" type="number" [(ngModel)]="requestStatus" class="input-control"  placeholder="" autocomplete="off" [disabled]='true'>
+                    </mat-form-field>
+                </div>
+
+                <div class="input_box" *ngIf="niyatInfo.questType == 'TEXT'">
+                    <mat-form-field apperance="fill">
+                        <input matInput type="search" [(ngModel)]="requestStatus" class="input-control" [disabled]='true'>
+                    </mat-form-field>
+                </div>
+
+                <div class="input_box" *ngIf="niyatInfo.questType == 'AMOUNT'">
+                    <mat-form-field apperance="fill">
+                        <input matInput oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"  min="0" type="number" [(ngModel)]="requestStatus" class="input-control" autocomplete="off"  [disabled]='true'>
+                    </mat-form-field>
+                </div>
+
+                <div class="input_box" *ngIf="niyatInfo.questType == 'INTEGER'">
+                    <mat-form-field apperance="fill">
+                        <input matInput oninput="this.value = 
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"  min="0" type="number" [(ngModel)]="requestStatus" class="input-control" autocomplete="off" [disabled]='true'>
+                    </mat-form-field>
+                </div>
+            </div> 
+            
+            <div class="list_radio" *ngIf="niyatInfo.status == 1">
+                <button *ngIf="userRole === 'Mumin'" type="button" class="submit_button" [ngClass]="{'disabled': niyatInfo.itsApproved == null && daysleft == false }" (click)="updateNiyat()">Request For Update</button>
+            </div>
+            <div class="info_wrap btn_mubarak noPoniterEvent " *ngIf="niyatInfo.status == 3">
+                <div class="list_radio">
+                    <button type="button" class="submit_button">
+                        <i><img src="../assets/images/mubarak_bg.png" alt=""></i>
+                        <i class="img_right"><img  src="../assets/images/mubarak_bg_right.png" alt=""></i>
+                        MUBARAK
+                    </button>
+                
+                </div>
+                <p>you have completed the niyat</p>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="info_wrap btn_mubarak" *ngIf="niyatInfo.niyatType == 'SELF TIMEBOUND' || niyatInfo.niyatType == 'AAMIL and TIMEBOUND' ">
+            Days Left :   {{ niyatInfo.days }}
+        </div>
+        <div class="info_wrap btn_mubarak" *ngIf="itsApproved !== null">
+            {{ itsApproved }}
+        </div>
+
+        <div class="button" *ngIf="userRole !== 'Umoor Coordinator'">
+            <button *ngIf="niyatInfo.scannedNiyatUrl!=null" type="button" class="submit_button" (click)="viewNiyat(niyatInfo.scannedNiyatUrl,niyatInfo.scannedNiyatUrl2)">
+                <img src="../assets/images/view_niyat.png" /> View Niyat Form</button>
+            <button *ngIf="niyatInfo.scannedNiyatUrl==null" type="button" class="button_disabled submit_button">
+                <img src="../assets/images/view_niyat.png" /> View Niyat Form</button>    
+        </div>
+
+        <div *ngIf="niyatInfo.status == 2">
+            <div class="view_txt" *ngIf="niyatInfo.approver1 != null">
+                <p style="font-weight: 500;">The Niyat request has been submitted. Following are the respective Approvers. Once they approve, Trophies will be awarded to a mumin.</p>
+                <p *ngIf="isAlternateApprover(niyatInfo.approver1) || isAlternateApprover(niyatInfo.approver2) || isAlternateApprover(niyatInfo.approver3)" style="font-weight: 500; color: #cc6300; margin-top: 5px;">This niyat can also be approved by {{ niyatInfo.niyatType }}.</p>
+            </div>
+            <div class="niyat_approve">
+                <div class="niyat_row" *ngIf="niyatInfo.approver1 != null && shouldShowApproverRow(niyatInfo.approver1)">
+                    <div class="txt_wrap wd_1 poniterEvent">
+                        <a style="font-weight: 500; color: #000;" (click)="contact(niyatInfo.approver1)">{{ getApproverDisplayName(niyatInfo.approver1) }}</a>
+                    </div>
+                    <div class="wd_wrap">
+                        <div class="txt_wrap ml" *ngIf="userRole !='Mumin' && userRole !== 'Khidmat Ramadaniyah'">
+                            <button *ngIf="!isAlternateApprover(niyatInfo.approver1) || isSelf(niyatInfo.approver1)" type="button" class="submit_button" [ngClass]="{'disabled':niyatInfo.status == 3 || niyatInfo.approver1 != userRole}" (click)="niyatApproval(niyatInfo.niyatId, niyatInfo.approver1)">Approve Niyat</button>
+                        </div>
+                        <div class="txt_wrap ml" *ngIf="userRole !='Mumin' && userRole !== 'Khidmat Ramadaniyah'">
+                            <button *ngIf="!isAlternateApprover(niyatInfo.approver1) || isSelf(niyatInfo.approver1)" type="button" class="submit_button" [ngClass]="{'disabled':niyatInfo.status == 3 || niyatInfo.approver1 != userRole}" (click)="viewRevertNiyat(niyatInfo.niyatId, niyatInfo.approver1)">Revert Niyat</button>
+                        </div>
+                        <div class="txt_wrap ml">
+                            <span *ngIf="niyatInfo.firstApprovalDate != null" class="active_status">Approved</span>
+                            <span *ngIf="niyatInfo.firstApprovalDate == null && niyatInfo.status != 3" class="active_status inactive">Pending</span>
+                       </div>
+                        
+                        <div class="txt_wrap ml">
+                            <button *ngIf="(userRole === 'Mumin' || isSelf(niyatInfo.approver1)) && userRole !== 'Khidmat Ramadaniyah'" type="button" class="submit_button" [ngClass]="{'disabled': niyatInfo.status == 3 || (userRole != 'Mumin') ? niyatInfo.approver1 != userRole: ''}" (click)="sendMessage($event, niyatInfo.approver1, niyatInfo.name)" >
+                                Send Message  
+                            </button>
+                        </div>
+                        <div class="txt_wrap ml" *ngIf="niyatInfo.niyatType == 'AAMIL OR COORDINATOR APPROVED' && niyatInfo.secondApprovalDate == null">
+                            <span class="time_txt">{{pendingTime}}</span>
+                        </div>
+                      
+                        <div class="txt_wrap ml" *ngIf="niyatInfo.niyatType != 'AAMIL OR COORDINATOR APPROVED'">
+                            <span class="time_txt">{{pendingTime}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="niyat_row" *ngIf="niyatInfo.approver3 != null && shouldShowApproverRow(niyatInfo.approver3)">
+                    <div class="txt_wrap wd_1 poniterEvent">
+                        <a style="font-weight: 500; color: #000;" (click)="contact(niyatInfo.approver3)">{{ getApproverDisplayName(niyatInfo.approver3) }}</a>
+                    </div>
+                    <div class="wd_wrap">
+                        <div class="txt_wrap ml" *ngIf="userRole !='Mumin' && userRole !== 'Khidmat Ramadaniyah'">
+                            <button *ngIf="!isAlternateApprover(niyatInfo.approver3) || isSelf(niyatInfo.approver3)" type="button" class="submit_button" [ngClass]="{'disabled':niyatInfo.status == 3 || niyatInfo.approver3 != userRole}" (click)="niyatApproval(niyatInfo.niyatId, niyatInfo.approver3)">Approve Niyat</button>
+                        </div>
+                        <div class="txt_wrap ml" *ngIf="userRole !='Mumin' && userRole !== 'Khidmat Ramadaniyah'">
+                            <button *ngIf="!isAlternateApprover(niyatInfo.approver3) || isSelf(niyatInfo.approver3)" type="button" class="submit_button" [ngClass]="{'disabled':niyatInfo.status == 3 || niyatInfo.approver3 != userRole}" (click)="viewRevertNiyat(niyatInfo.niyatId, niyatInfo.approver3)">Revert Niyat</button>
+                        </div>
+                        <div class="txt_wrap ml">
+                            <span *ngIf="niyatInfo.firstApprovalDate != null" class="active_status">Approved</span>
+                            <span *ngIf="niyatInfo.firstApprovalDate == null && niyatInfo.status != 3" class="active_status inactive">Pending</span>
+                       </div>
+                        
+                        <div class="txt_wrap ml">
+                            <button *ngIf="(userRole === 'Mumin' || isSelf(niyatInfo.approver3)) && userRole !== 'Khidmat Ramadaniyah'" type="button" class="submit_button" [ngClass]="{'disabled': niyatInfo.status == 3 || (userRole != 'Mumin') ? niyatInfo.approver3 != userRole: ''}" (click)="sendMessage($event, niyatInfo.approver3, niyatInfo.name)" >
+                                Send Message  
+                            </button>
+                        </div>
+                        <div class="txt_wrap ml" *ngIf="niyatInfo.niyatType == 'AAMIL OR COORDINATOR APPROVED' && niyatInfo.secondApprovalDate == null">
+                            <span class="time_txt">{{pendingTime}}</span>
+                        </div>
+                        <div class="txt_wrap ml" *ngIf="niyatInfo.niyatType != 'AAMIL OR COORDINATOR APPROVED'">
+                            <span class="time_txt">{{pendingTime}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="niyat_row" *ngIf="niyatInfo.approver2 != null && shouldShowApproverRow(niyatInfo.approver2)" >
+                    <div class="txt_wrap wd_1 poniterEvent">
+                        <a style="font-weight: 500; color: #000;" (click)="contact(niyatInfo.approver2)">{{ getApproverDisplayName(niyatInfo.approver2) }}</a>
+                    </div>
+                    <div class="wd_wrap">
+                        <div class="txt_wrap ml" *ngIf="userRole !='Mumin' && userRole !== 'Khidmat Ramadaniyah'">
+                            <button *ngIf="!isAlternateApprover(niyatInfo.approver2) || isSelf(niyatInfo.approver2)" type="button" class="submit_button" [ngClass]="{'disabled':niyatInfo.status == 3 || niyatInfo.approver2 != userRole}" (click)="niyatApproval(niyatInfo.niyatId, niyatInfo.approver2)">Approve Niyat</button>
+                        </div>
+                        <div class="txt_wrap ml" *ngIf="userRole !='Mumin'">
+                        <button *ngIf="!isAlternateApprover(niyatInfo.approver2) || isSelf(niyatInfo.approver2)" type="button" class="submit_button" [ngClass]="{'disabled':niyatInfo.status == 3 || niyatInfo.approver2 != userRole}" (click)="viewRevertNiyat(niyatInfo.niyatId, niyatInfo.approver2)">Revert Niyat</button>
+                        </div>
+                        <div class="txt_wrap ml">
+                            <span *ngIf="niyatInfo.secondApprovalDate != null" class="active_status">Approved</span>
+                            <span *ngIf="niyatInfo.secondApprovalDate == null && niyatInfo.status != 3" class="active_status inactive">Pending</span>
+                            
+                            
+                            <!-- <span *ngIf="(niyatInfo.firstApprovalDate != null && niyatInfo.secondApprovalDate != null)" class="active_status">Approved</span>
+                            <span *ngIf="(niyatInfo.firstApprovalDate == null || niyatInfo.secondApprovalDate == null) && niyatInfo.status == 2" class="active_status inactive">Pending</span>
+                          -->
+                    
+                        </div>
+                        <div class="txt_wrap ml">
+                            <button *ngIf="(userRole === 'Mumin' || isSelf(niyatInfo.approver2)) && userRole !== 'Khidmat Ramadaniyah'" type="button" class="submit_button" [ngClass]="{'disabled': niyatInfo.status == 3 || (userRole != 'Mumin') ? niyatInfo.approver2 != userRole : ''}" (click)="sendMessage($event, niyatInfo.approver2, niyatInfo.name)" >
+                                Send Message  
+                            </button>
+                        </div>
+                        <div class="txt_wrap ml" *ngIf="niyatInfo.niyatType == 'AAMIL OR COORDINATOR APPROVED' && niyatInfo.firstApprovalDate == null">
+                            <span class="time_txt">{{pendingTime2}}</span>
+                        </div>
+                        <div class="txt_wrap ml" *ngIf="niyatInfo.niyatType != 'AAMIL OR COORDINATOR APPROVED'">
+                            <span class="time_txt">{{pendingTime2}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end Mumnin niyat information request for update  -->
+
+
+<div  *ngIf="( niyatInfoData[0]?.trophiesAwarded > 0 )">
+<div class="add_department_form" *ngIf="(this.userRole == 'Mumin' && (niyatInfoData && niyatInfoData[0].status == 3) && niyatInfoData[0].trophiesAwarded >0) && (niyatLoading$ | async) || ((niyatInfoData) && (niyatInfoData[0].status == 3 && this.userRole == 'Mumin'))  && ((niyatInfoData) && (niyatInfoData[0].approver1) && niyatInfoData && niyatInfoData[0].status == 3 && this.userRole == 'Mumin') || ((niyatInfoData) && (niyatInfoData[0].approver2) && niyatInfoData && niyatInfoData[0].status == 3 && this.userRole == 'Mumin')">
+    <div class="mumnin_reward">
+        <div class="trophy_level trophy_achieve">
+            <div class="level_count">
+                <img src="../assets/images/trophy.png" alt="" />
+                <div class="txt_overlay"><p>{{niyatInfoData[0].trophiesAwarded}}</p></div>
+            </div>
+            <p>You have achieved {{niyatInfoData[0].trophiesAwarded}} trophies for this Niyat</p>
+        </div>
+        <div>
+            <div class="redeem_btn">
+                <button  type="button" class="submit_button" *ngIf="userRole !== 'Khidmat Ramadaniyah'" routerLink="/catalogue">Redeem Now</button>
+                <button *ngIf="userRole !== 'Khidmat Ramadaniyah' && niyatInfoData[0].isGifted == false  && ((niyatInfoData && niyatInfoData[0].approver1) || (niyatInfoData && niyatInfoData[0].approver2)|| (niyatInfoData && niyatInfoData[0].approver3))" type="button"  class="submit_button submit_button1" (click)="getReward(niyatInfoData[0].approver1 ,niyatInfoData[0].approver2,niyatInfoData[0].approver3)">
+                    GIFT A REWARD</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<!-- start Mumnin niyat information mubarak and you achieved trophy  -->
+<!-- <div *ngIf="!requestUpdate">
+<div class="add_department_form">
+    <div class="mumnin_reward">
+        <div class="trophy_level trophy_achieve">
+            <div class="level_count">
+                <img src="../assets/images/trophy.png" alt="" />
+                <div class="txt_overlay"><p>{{niyatInfoData[0].trophiesAwarded}}</p></div>
+            </div>
+            <p>You have achieved {{niyatInfoData[0].trophiesAwarded}} trophies for this Niyat</p>
+        </div>
+        <div *ngIf="userRole==='Mumin'" class="redeem_btn">
+            <button  type="button" class="submit_button" routerLink="/catalogue">Redeem Now</button>
+        </div>
+    </div>
+</div>
+</div> -->

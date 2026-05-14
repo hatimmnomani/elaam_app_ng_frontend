@@ -1,0 +1,385 @@
+<!-- Start Image -->
+<div *ngIf="data.imageScanPath">
+    <div #container *ngFor="let product of products" class="imgContainer">
+      <ng-image-slider [images]="product.images" [imagePopup]="false" [manageImageRatio]="false"
+        [imageSize]="{width: container.offsetWidth, height: container.offsetWidth, space:0}">
+      </ng-image-slider>
+    </div>
+  <!-- <img *ngIf="!data.imageScanPath && data.imagePath" class="imagPath" src="{{data.imagePath || 'assets/images/add_photo.svg'}}"/> -->
+  <!-- <img *ngIf="data.imageScanPath && !data.imagePath" class="imagScanPath" src="{{data.imageScanPath}}"/> -->
+</div>
+<div *ngIf="data.imagePath" class="imgContainer1">
+  <img *ngIf="!data.imageScanPath && data.imagePath" class="imagPath" src="{{data.imagePath || 'assets/images/add_photo.svg'}}"/>
+  
+</div>
+<!-- Start Image -->
+
+<div *ngIf="data.m1">
+  <!--start Mumnin Mubarak popup page -->
+ <div class="send_msg_popup mubarak_popup">
+  <mat-icon class="material-icons-outlined action_icon close_popup" (click)="onNoClick()" *ngIf="data.buttonClose">
+    close
+  </mat-icon>
+   <!-- <div class="close_popup"><mat-icon>close</mat-icon></div> -->
+   <h2>{{data.m1}}</h2>
+   <h3>You Won the Trophy</h3>
+   <div class="trophy_level">
+      <div class="level_count">
+          <img src="../assets/images/trophy.png" alt="" />
+          <div class="txt_overlay"><p>10</p></div>
+      </div>
+      
+   </div>
+   <h4>You Have Won the 10 Trophies</h4>
+  </div>
+<!--end Mumnin Mubarak popup page -->
+</div>
+
+<!--Start Send  Message form popup page -->
+<form [formGroup]="sendMsgForm" *ngIf="data.form">
+  <div class="send_msg_popup">
+    <mat-icon class="material-icons-outlined action_icon close_popup" (click)="onNoClick()" >
+      close
+    </mat-icon>
+    <!-- <div class="close_popup"><mat-icon>close</mat-icon></div> -->
+    <h3>Send Message</h3>
+    <div class="form_popup">
+        <div class="input_box">
+            <mat-form-field apperance="fill">
+                <input matInput type="search" autocomplete="off" class="input-control" readonly>
+                <p>
+  {{
+    data.username === 'Aamil'
+      ? 'Aamil Saheb'
+      : data.username === 'Muavin Aamil'
+        ? 'Muawin Aamil Saheb'
+        : data.username
+  }}
+</p>
+
+            </mat-form-field>
+        </div>
+        <div class="input_box pl_space subject_input">
+            <mat-form-field apperance="fill">
+              <mat-label>Enter Subject<span class="astrick">*</span></mat-label>
+              <input matInput type="search" formControlName="subject" autocomplete="off" class="input-control">
+              <mat-error *ngIf="!f.subject.valid">{{validationMessages.subject}}</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="txt_area">
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Enter Message<span class="astrick">*</span></mat-label>
+                <textarea matInput formControlName="messageText"></textarea>
+                <mat-error *ngIf="!f.messageText.valid">{{validationMessages.messageText}}</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="botton_button">
+        <button type="button" class="cancel_button submit_button" (click)="onNoClick()">Cancel</button>
+        <button type="button" class="submit_button" (click)="sendRecord()">Send</button>
+    </div>
+  </div>
+</form>
+<!--end Send  Message form popup page -->
+
+<!--Start Contact Detail popup page -->
+<div *ngIf="data.contact">
+  <div class="send_msg_popup contact_pd">
+    <mat-icon class="material-icons-outlined action_icon close_popup" (click)="onNoClick()" *ngIf="data.buttonClose">
+      close
+    </mat-icon>
+    <!-- <div class="close_popup"><mat-icon>close</mat-icon></div> -->
+    <h3>Contact Details</h3>
+    <div class="detail_sub">
+        <p><span>Name</span> :   {{data.contactDetails.name || 'n/a'}}</p>
+        <p><span>Contact Number</span> : {{data.contactDetails.mobileNumber || 'n/a'}}</p>
+        <p><span>Email</span> : {{data.contactDetails.email || 'n/a'}}</p>
+    </div>
+  </div>
+</div>  
+<!--end Contact Detail popup page -->
+
+<!--Start Catalogue Detail popup page -->
+<div class="send_msg_popup contact_pd" *ngIf="data.catalogue">
+  <mat-icon class="material-icons-outlined action_icon close_popup" (click)="onNoClick()" *ngIf="data.buttonClose">
+    close
+  </mat-icon>
+  <h3>Catalogue Details</h3>
+  <div class="detail_sub">
+      <p><span>Title</span> :   {{data.title || 'n/a'}}</p>
+      <p><span>Description</span> : {{data.description || 'n/a'}}</p>
+  </div>
+</div>
+<!--end Contact Detail popup page -->
+
+<!--Start Notification popup page -->
+<div  *ngIf="data.notification">
+  <div class="send_msg_popup mubarak_popup">
+    <mat-icon class="material-icons-outlined action_icon close_popup" (click)="onNoClick()" *ngIf="data.buttonClose">
+      close
+    </mat-icon>
+  </div>
+</div>
+<!--End Notification popup page -->
+
+<div  *ngIf="data.name || data.mumin">
+  <div class="confirmation_dialog alert_dialog send_msg_popup conform_p">
+    <mat-icon class="material-icons-outlined action_icon close_popup" (click)="onNoClick()" *ngIf="data.buttonCancel">
+        close
+    </mat-icon>
+    <h3 *ngIf="data.heading">{{data.heading}}</h3>
+      
+    <div class="detail_sub conform_p" mat-dialog-content>
+    <p *ngIf="data.name">{{data.name}}</p>
+    <p *ngIf="data.name1">{{data.name1}}</p>
+    <p *ngIf="data.name2">{{data.name2}}</p>
+    <p *ngIf="data.name3">{{data.name3}}</p>
+    <p *ngIf="data.record.trophies"> {{data.record.trophies}} {{data.subtext}}</p>
+
+    </div>
+    <div class="botton_button">
+      <button type="reset" *ngIf="data.buttonCancel" class="cancel_button submit_button" (click)="onNoClick()">{{data.buttonCancel}}</button>
+      <button type="submit" *ngIf="data.buttonSubmit" class="theme_button submit_button"(click)="record()">{{data.buttonSubmit}}</button>   
+    </div>
+  </div>
+</div>
+
+<!-- Start Catalogue -->
+<div *ngIf="data.viewCatalog">
+  <div class="send_msg_popup catalogue_pop">
+    <div class="add_department_form">
+      <mat-icon class="material-icons-outlined action_icon close_popup" (click)="onNoClick()" *ngIf="data.buttonClose">
+        close
+      </mat-icon>
+        <div class="department_form txt-cen">
+            <div fxLayout="row wrap" fxLayoutAlign="start">
+              <div fxFlex.gt-xs="100%">
+                <div class="card_view_catalogue">
+                    <div class="catalogue_circle">
+                        <img  [src]="data.imgPath" alt="" />
+                    </div>
+                    <h4>{{data.trophies || '-' }}</h4> 
+                    <button mat-button>{{data.itemTitle || '-' }}</button>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+<form [formGroup]="sendApproveal" *ngIf="data.getReward">
+<div class="send_msg_popup gift-reward" >
+  <div class="gift-header">
+    <mat-icon class="material-icons-outlined action_icon close_popup" (click)="onNoClick()" *ngIf="data.buttonClose">
+      close
+    </mat-icon>
+      <h3>GIFT A REWARD</h3>
+  </div>
+  <div class="detail_sub">
+    <p>Total Trophies: <span>{{(data.niyatInfo[0])?data.niyatInfo[0].trophiesAwarded:''}}</span></p>
+
+    <div fxLayout="row" fxLayoutAlign="start center" *ngFor="let item of data.approverName.data">
+      <div fxFlex="50">
+        
+          <div class="input_box">
+              <label for="exampleInputEmail1">{{ item.roleName }} -  {{ item.name ? item.name : ''}}</label>
+              <mat-form-field apperance="fill">
+                  <input matInput type="number" min="0"  formControlName="approval" autocomplete="off" autocomplete="off" class="input-control">
+                  <mat-error *ngIf="!g.approval.valid">Value should be greater than 0</mat-error>
+                </mat-form-field>
+          </div> 
+      </div>
+    </div>
+  </div>
+
+  <div class="botton_button">
+      <button type="button" class="cancel_button submit_button" (click)="cancel()">Cancel</button>
+      <button type="button" class="submit_button" (click)="alertConfirm()">Confirm</button>
+  </div>
+</div> 
+
+</form>
+
+
+<div *ngIf="data.record=='data-profile'">
+  <div class="send_msg_popup conform_p">
+    <div class="close_popup closeconfirm"><mat-icon (click)="onNoClick()">close</mat-icon></div>
+    <h3>Confirmation Message</h3>
+    <div class="detail_sub conform_p">
+        <p>Are you sure you want to proceed with trophy allocations. Once submitted , you cannot make the changes.</p>
+    </div>
+    <div class="botton_button">
+        <button type="button" class="submit_button" (click)="sendConfirm()">Yes</button>
+        <button type="button" class="cancel_button submit_button" (click)="cancel()">No</button>
+    </div>
+  </div>
+</div>
+<!-- <div class="" *ngIf="data.record=='data-profile'">
+  <div class="gift-header">
+    <mat-icon class="material-icons-outlined action_icon close_popup">
+      close
+    </mat-icon>
+      <h3>Confirmation Message</h3>
+  </div>
+  <div mat-dialog-content class="data_name">Are you sure you want to proceed with trophy allocations. Once submitted , you cannot make the changes.</div>
+  <div class="botton_button">
+    <button type="reset" mat-flat-button class=" submit_button" (click)="sendConfirm()">{{(data.record == 'data-profile')?'Yes':'Discard'}}</button>
+    <button type="submit" mat-flat-button class="cancel_button submit_button cancelpop" (click)="cancel()">{{(data.record == 'data-profile')?'No':'Continue editing'}}</button>
+  </div>
+</div> -->
+
+<!-- Start Mumin Details List -->
+<div *ngIf="data.viewMumin">
+  <div class="send_msg_popup mumin_pop piop-3">
+    <div class="viewmumin">
+      <mat-icon class="material-icons-outlined action_icon close_popup" (click)="onNoClick()" *ngIf="data.buttonClose">
+        close
+      </mat-icon>
+      <h3 *ngIf="data.heading">{{data.heading}}</h3>
+      <div class="search_list">
+        <mat-form-field class="example-full-width" appearance="fill">
+          <input
+            matInput
+            class="searchInput"
+            oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"
+            maxlength="8"
+            minlength="8"
+            placeholder="Search by ITS"
+            [formControl]="searchControl"
+            (keyup)="searchByIts($event)"
+          />
+          <i class="search_icon"
+            ><mat-icon aria-hidden="false" aria-label="Example search icon"
+              >search</mat-icon
+            ></i
+          >
+          <i
+            class="clearbtn"
+            *ngIf="searchControl.value"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="emptySearch()"
+          >
+            <mat-icon>close</mat-icon>
+          </i>
+        </mat-form-field>
+      </div>
+      
+      <div class="downloadbutton">
+        <app-download-files-button
+        [dataList]="muminList$.asObservable()"
+        [downloadtitle]="downloadButtonTitle"
+        [getHeader]="sendHeader"
+        [getTableId]="sendTableId"
+        [getTitle]="sendTitle"
+        [buttonText]="'Niyat'"
+        [getFileName]="sendFileName"
+        [showCSV]= "false"
+        (sendData)="downloadFileData(data)"></app-download-files-button>
+      </div>
+      <div  class="downloadbutton">
+        <button class="All_Selected"   
+        (click)="openConfirmation()"
+        [disabled]="checkboxSelectedVal.length === 0"
+        [ngClass]="{'disabled-btn': checkboxSelectedVal.length === 0}"
+        
+        >
+            Acknowledge All
+        </button>
+      </div>
+      
+      <div class="table_wrap popup-table2">
+        <app-server-side-smart-table 
+          [columns]="columnsHeader"
+          [service]="caterlogue" 
+          [catelogType]="data.catalogueType" 
+          [itemId]="data.itemId" 
+          (tableRecord)="fetchedRecord($event)" 
+          [isAcknowledged]="true"
+          [downloadBtn]="true"
+          [searchStr]="query">
+        </app-server-side-smart-table>    
+      </div>
+    </div>
+  </div>
+  
+</div>
+<div *ngIf="showConfirmation">
+  <div class="send_msg_popup conform_p" style="border: 4px solid white; padding: 20px; border-radius: 8px; background-color: #222;">
+    <div class="close_popup closeconfirm">
+      <mat-icon (click)="closeConfirmation()">close</mat-icon>
+    </div>
+    <h3>Confirmation Message</h3>
+    <div class="detail_sub conform_p">
+      <p>Are you sure you want to acknowledge all items?</p>
+    </div>
+    <div class="botton_button">
+      <button type="button" class="submit_button" (click)="confirmAction()">Yes</button>
+      <button type="button" class="cancel_button submit_button" (click)="closeConfirmation()">No</button>
+    </div>
+  </div>
+</div>
+<!--End Mumin Details List -->
+
+
+<!--Start Niyat revert form popup page -->
+<form [formGroup]="revertNiyatForm" *ngIf="data.form1">
+<div class="send_msg_popup rejection_pop">
+    <mat-icon class="material-icons-outlined action_icon close_popup" (click)="onNoClick()" >
+      close
+    </mat-icon>
+    <!-- <div class="close_popup"><mat-icon>close</mat-icon></div> -->
+    <h3>Revert Niyat</h3>
+    <div class="form_popup">
+        <div class="txt_area">
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Enter Remarks<span class="astrick">*</span></mat-label>
+                <textarea matInput formControlName="remarks"></textarea>
+                 <mat-error *ngIf="!fg.remarks.valid">{{validationMessages.remarks}}</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="botton_button">
+        <button type="button" class="cancel_button submit_button" (click)="onNoClick()">Cancel</button>
+        <button type="button" class="submit_button" (click)="sendRevertRecord()">Send</button>
+    </div>
+  </div>
+</form>
+<!--end Niyat rejection form popup page -->
+
+<!--Start Niyat Deactivate form popup page -->
+<form [formGroup]="rejectForm" *ngIf="data.form2">
+<div class="send_msg_popup rejection_pop">
+    <mat-icon class="material-icons-outlined action_icon close_popup" (click)="onNoClick()" >
+      close
+    </mat-icon>
+    <h2 mat-dialog-title class="dialog-title">
+  {{ isConfirmMode ? 'Confirm Deactivate Niyat' : 'Deactivate Niyat' }}
+</h2>
+     <!-- Show niyat question here -->
+    <div *ngIf="this.niyatQuestionEnglish" class="niyat-question-wrapper">
+  <label class="niyat-question-label">Niyat Question</label>
+  <p class="niyat-question-text">{{ this.niyatQuestionEnglish }}</p>
+</div>
+<!-- If user is raising, show textarea -->
+<div *ngIf="!isConfirmMode">
+    <h3>Reason for Deactivation</h3>
+    <div class="form_popup">
+        <div class="txt_area">
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Enter Message<span class="astrick">*</span></mat-label>
+                <textarea matInput formControlName="messageText"></textarea>
+            <mat-error *ngIf="!fr.messageText.valid">{{validationMessages.messageText}}</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+</div>
+
+    <div class="botton_button">
+        <button type="button" class="cancel_button submit_button" (click)="onNoClick()">Cancel</button>
+        <button type="button" class="submit_button" (click)="sendRecord()">{{ isConfirmMode ? 'Confirm' : 'Send' }}</button>
+    </div>
+  </div>
+</form>
+<!--end Niyat Deactivate form popup page -->

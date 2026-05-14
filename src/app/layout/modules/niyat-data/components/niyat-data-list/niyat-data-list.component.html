@@ -1,0 +1,76 @@
+<div class="heading_bar">
+  <h1>List of Niyats</h1>
+</div>
+<div class="add_department pre_save">
+  <div class="download_file">
+      <button mat-button #dnMenuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"><span><img src="../assets/images/file_download_black_24dp.svg" alt=""/></span> Download Niyat Template </button>
+      <mat-menu #menu="matMenu" class="download_niyat">
+          <div class="btn_dropdown" (click)="$event.stopPropagation();">
+                <div class="input_box">
+                    <mat-form-field appearance="fill">
+                        <mat-select [(ngModel)]="defaultSelected" placeholder="Select Niyat Template" (selectionChange)="onChangeNiyatTemplate($event)" >
+                        <mat-option *ngFor="let niyat of niyatTemplate" [value]="niyat.templateId">{{niyat.templateName}}</mat-option>
+                      </mat-select>
+                      
+                  </mat-form-field>
+                </div>
+              <div *ngIf="isTemplateClicked">
+                <button type="button" (click)="trigger.closeMenu(); resetDownload();" class="d_download c_cancel">Cancel</button>
+              <app-download-files-button
+              [dataList]="niyatStatusList$.asObservable()"
+              [downloadtitle]="downloadButtonTitle"
+               [getHeader]="sendHeader"
+               [getTableId]="sendTableId"
+               [getTitle]="sendTitle"
+               [buttonText]="'Niyat'"
+              [getFileName]="sendFileName"
+              [showCSV]= "false"
+              (sendData)="downloadFileData()"></app-download-files-button>
+              </div>
+          </div>
+      </mat-menu>
+      <button mat-button  #upMenuTrigger="matMenuTrigger" [matMenuTriggerFor]="uploadMenu">
+        <span><img src="../assets/images/file_upload_black_24dp.svg" alt=""/></span>  Upload Niyats</button>
+        <mat-menu #uploadMenu="matMenu" class="download_select"> 
+          <div class="btn_dropdown" (click)="$event.stopPropagation();">
+            <div class="input_box niyat_upload">
+                <div class="niyat_file" *ngIf="isUpTemplateClicked">
+                  <input matInput type="text" class="input-control" id=""   placeholder="">
+                    <div class="broswe_file"  isUpTemplateClicked>
+                      <input id="file-upload" (change)="handleExcelFileInput($event)" type="file"/><span class="browse">Browse</span> <span class="text_choose">{{fileName}}</span>
+                    </div>
+                    <div class="mt-top">
+                        <button type="button" (click)="uptrigger.closeMenu(); resetUpload();" class="d_download c_cancel">Cancel</button>
+                        <button *ngIf="excelToUpload != null" (click)="uptrigger.closeMenu()" (click)="uploadNiyat()" class="d_download">Upload</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </mat-menu>
+      
+  </div>
+  
+  <app-header-bar [title]="''"  [path]="'/admin/niyat-data/add'" [buttonName]="'Add Niyat Manually'" ></app-header-bar>
+
+  
+</div>
+<div class="search_list">
+  <mat-form-field class="example-full-width" appearance="fill">
+    <input matInput oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" maxlength="8" minlength="8" placeholder="Search by ITS" [formControl]="searchControl" (keyup)="searchByIts($event)" >
+    <i class="search_icon"><mat-icon aria-hidden="false" aria-label="Example search icon">search</mat-icon></i>
+    <i class="clearbtn" *ngIf="searchControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="emptySearch()">
+      <mat-icon>close</mat-icon>
+    </i>
+  </mat-form-field>
+</div> 
+
+<div class="table_wrap">
+  <app-server-side-smart-table 
+    [columns]="columnsHeader"
+    (tableRecord)="fetchedRecord($event)" 
+    [service]="niyatDataService" 
+    [searchStr]="query" 
+    [editBtn]="true"
+    [cloneBtn]="false">
+  </app-server-side-smart-table>    
+</div>

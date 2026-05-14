@@ -1,0 +1,13 @@
+/** No CSS for this example */
+.disabled:hover{
+    cursor: not-allowed;
+}
+.disabled:active{
+    pointer-events: none;
+}
+
+.submit_button1{
+    color: #222020;
+    background: linear-gradient(to top, #e5b43b 0%, #fff7dc 100%);
+    margin-left: 10px;
+}

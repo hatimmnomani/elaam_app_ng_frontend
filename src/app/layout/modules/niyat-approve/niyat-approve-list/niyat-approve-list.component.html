@@ -1,0 +1,15 @@
+<app-header-bar [title]="'Niyats Pending for Approval'" [hideButton]="true" ></app-header-bar>
+
+
+<div class="table_wrap">
+  <app-server-side-smart-table 
+    [columns]="columnsHeader"
+    (tableRecord)="fetchedRecord($event)" 
+    [service]="niyatDataService" 
+    [searchStr]="query" 
+    [isApproved]="true"
+    [scan]="true"
+    [centerFocusinfo]="true">
+  
+  </app-server-side-smart-table>   
+</div>

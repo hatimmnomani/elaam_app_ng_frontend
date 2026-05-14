@@ -1,0 +1,84 @@
+.center-align-spinner{
+    text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+     /*  left: 0%;
+      right: 0; */
+      left: 50%;
+      top: 0;
+      bottom: 0%;
+      z-index: 99;
+  }
+  .mat-progress-spinner circle, .mat-spinner circle {
+    stroke: #ead766;
+    }
+
+  .search_list{
+    float: right;
+    clear: both;
+    margin-top: 10px;
+  }
+  .search_list i.search_icon {
+    position: absolute;
+    left: 10px;
+    top: -5px;
+    color: #db9884;
+    width: 90%;
+    height: 100%;
+  }
+  .full_wd.input_box .mat-input-element{
+    width:98%;
+  }
+  .search_list .mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: #fdf9e4;
+  }
+  .search_list .mat-form-field-ripple {
+    background-color: #b9330a;
+  }
+  .search_list .mat-form-field-appearance-fill .mat-form-field-flex {
+    border-radius: 4px 4px 0 0;
+    padding: 0;
+  }
+  .search_list .mat-form-field-appearance-fill .mat-form-field-infix {
+    padding: .25em 10px .75em 40px;
+  }
+  .toast-info {
+    background-color: #b8320a;
+    border: 1px solid #fdf9e4;
+    border-radius: 5px  !important;
+    color:#fff !important;
+  }
+  .imageuploadc{
+    margin-bottom: 10px !important;
+    display: block;
+    margin-bottom: 5px !important;
+    font-size: 15px;
+    color: #000;
+}
+
+  button.submit_button{
+    &:focus-visible{
+      outline: none !important;
+    }
+  }
+
+  .mat-dialog-container{
+    padding: 10px !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  
+  .mt_search{
+    margin-bottom: 20px;
+  }
+
+  button.cursor-not-allowed{
+    cursor: not-allowed;
+    span{
+      cursor: not-allowed !important;
+    }
+  }

@@ -1,0 +1,13 @@
+<div layout="row">
+  <app-header-bar [title]="'Notifications'"  [hideButton]="true"></app-header-bar>
+  <div class="table_wrap">
+    <app-server-side-smart-table 
+  [columns]="columnsHeader"
+  (tableRecord)="fetchedRecord($event)" 
+  [service]="notificationservice" 
+  [searchStr]="query" 
+  [centerFocus]="true"
+  ></app-server-side-smart-table>
+   
+</div>
+</div>

@@ -1,0 +1,92 @@
+::ng-deep{
+    .mat-form-field-appearance-fill .mat-form-field-subscript-wrapper {
+        padding: 0 !important;
+    }
+}
+
+.d-space-flex{
+    display: flex;
+    justify-content: space-between;
+}
+
+.remember_bar{
+    width: unset !important;
+    float: none !important;
+}
+.forgot_password{
+    width: unset !important;
+    text-align: unset !important;
+    float: none !important;
+}
+.help_link_number{
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    .link_click{
+        display: flex;
+        text-decoration: underline;
+        color: #fff;
+        cursor: pointer;
+        font-size: 14pt;
+        font-family: 'Roboto';
+        img{
+            margin-right: 10px;
+        }
+    }
+    .numbers_box{
+        background: #fff;
+        position: absolute;
+        bottom: 50px;
+        width: 290px;
+        right: 2px;
+        .box_top{
+            background: #fbcebe;
+            text-align: center;
+            padding: 22px 0 0;
+            margin: 0px;
+            img{
+                text-align: center;
+                background: #fff;
+                border-radius: 50px;
+                padding: 10px;
+                margin-bottom: -20px;
+            }
+            .close_bts{
+                position: absolute;
+                right: -10px;
+                top: -15px;
+                cursor: pointer;
+            }
+        }
+        .box_bottom{
+            padding: 30px 30px 10px;
+            .colling{
+                display: flex;
+                color: #a52e10;
+                margin-bottom: 15px;
+                font-size: 18pt;
+                font-family: 'Roboto';
+                img{
+                    margin-right: 15px;
+                }
+            }
+            .colling1{
+                display: flex;
+                color: #a52e10;
+                margin-bottom: 10px;
+                font-size: 13pt;
+                font-family: 'Roboto';
+                justify-content: center;
+            }
+        }
+        .triangle-down {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 15px solid #fff;
+            position: absolute;
+            right: 10px;
+          }
+    }
+}

@@ -1,0 +1,162 @@
+<div class="heading_bar2">
+    <div class="catalogue-tab mycatalogue_tab">
+        <mat-tab-group animationDuration="3ms" (selectedTabChange)="againCall($event)">
+            <mat-tab label="Niyat Form Counts">
+                <div class="add_department_form">
+                    <div class="department_form">
+                        <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <div fxFlex="50">
+                                <div fxLayoutAlign="start center">
+                                    <div fxLayoutAlign="center center">
+                                        <div class="heading_bar">
+                                            <h1>Niyat Form Counts</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div fxFlex="50">
+                                <div fxLayoutAlign="end center">
+                                    <div fxLayoutAlign="center center">
+                                        <div class="heading_bar">
+                                            <h3>Niyat forms filled </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <div fxFlex="50">
+                                <form class="width100" [formGroup]="advSearchForm">
+                                    <div fxLayout="row" fxLayoutAlign="start center">
+
+                                        <div fxFlex="30">
+                                            <div class="input_box">
+                                                <label for="exampleInputEmail1">Date <span
+                                                        class="astrick">*</span></label>
+                                                <mat-form-field appearance="fill">
+                                                    <mat-select (selectionChange)="onSelectionChange($event)"
+                                                        [(value)]="selected">
+                                                        
+                                                        <mat-option *ngFor="let s of advanceSearchKey"
+                                                            [value]="s.id">{{s.value |
+                                                            titlecase}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="30" *ngIf="selected!==0">
+                                            <div class="input_box">
+                                                <label for="exampleInputEmail1">Template <span
+                                                        class="astrick">*</span></label>
+                                                <mat-form-field appearance="fill">
+                                                    <mat-select formControlName="templateId"
+                                                        (selectionChange)="templateIdData($event.value)" [(value)]="selectedTemplate">
+                                                        <mat-option [value]='0'>Select Date</mat-option>
+                                                        <mat-option *ngFor="let niyat of niyatTemplate" [value]="niyat.templateId">{{niyat.templateName}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                            <div fxFlex="50">
+
+                                <div fxLayoutAlign="end top">
+                                    <div fxLayoutAlign="center center">
+                                        <div class="heading_bar">
+                                            <h1 class="count">{{niyatCount}}</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div fxLayoutAlign="end center">
+                                    <div class="se_btn_wrap" fxLayoutAlign="center center">
+                                        <!-- <button type="button"  mat-button  class="submit_button">
+                                             <img src="../assets/images/file_download_black_24dp.svg" alt="">   
+                                            Download All Form 
+                                        </button> -->
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+
+
+
+                        <div fxLayout="row wrap" fxLayoutAlign="start center">
+                            <div fxFlex.gt-xs="100%">
+                                <div class="table_wrap">
+                                    <app-server-side-smart-table 
+                                      [columns]="niyatcolumnsHeader"
+                                      (tableRecord)="fetchedRecord($event)" 
+                                      [service]="niyatDataService" 
+                                      [searchStr]="query" 
+                                      [niyatList]="niyatList"
+                                      [editBtn]="false">
+                                    </app-server-side-smart-table>    
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Niyat Form List">
+                <div class="add_department_form">
+                    <div class="department_form">
+                        <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <div fxFlex="50">
+                                <div fxLayoutAlign="start center">
+                                    <div fxLayoutAlign="center center">
+                                        <div class="heading_bar">
+                                            <h1>Niyat from List</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div fxFlex="50">
+                                <div fxLayoutAlign="end center">
+                                    <div fxLayoutAlign="center center">
+                                        <div class="se_btn_wrap" fxLayoutAlign="center center">
+                                            <!-- <button type="button" mat-button class="submit_button">
+                                                <img src="../assets/images/file_download_black_24dp.svg" alt="">   
+                                                Download All Form
+                                            </button> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div fxLayoutAlign="end center">
+                                    <div class="search_list">
+                                        <mat-form-field class="example-full-width" appearance="fill">
+                                          <input matInput oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" maxlength="8" minlength="8" placeholder="Search by ITS" [formControl]="searchControl" (keyup)="searchByIts($event)" >
+                                          <i class="search_icon"><mat-icon aria-hidden="false" aria-label="Example search icon">search</mat-icon></i>
+                                          <i class="clearbtn" *ngIf="searchControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="emptySearch()">
+                                            <mat-icon>close</mat-icon>
+                                          </i>
+                                        </mat-form-field>
+                                      </div> 
+
+                                </div>
+                            </div>
+                        </div>
+                        <div fxLayout="row wrap" fxLayoutAlign="start">
+                            <div fxFlex.gt-xs="100%">
+                                <div class="table_wrap">
+                                    <app-server-side-smart-table 
+                                      [columns]="columnsHeader"
+                                      (tableRecord)="fetchedRecord($event)" 
+                                      [service]="niyatDataService" 
+                                      [searchStr]="query" 
+                                      [niyatList]="niyatList"
+                                      [editBtn]="true">
+                                    </app-server-side-smart-table>    
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+
+::ng-deep {
+    .mat-column-notification, .mat-column-fromName, .mat-column-fromItsId{
+        width: 14%;
+    }
+    .mat-column-action,.mat-column-date{
+        width: 12%;
+    }
+    .mat-column-message{
+        width: auto;
+        word-wrap: break-word;   
+        overflow-wrap: break-word;
+        word-break: break-word;
+    }
+}

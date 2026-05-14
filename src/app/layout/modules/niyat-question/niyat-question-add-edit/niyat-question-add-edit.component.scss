@@ -1,0 +1,17 @@
+.arabicTest{
+    unicode-bidi: bidi-override;
+    direction: RTL;
+    text-align: right;
+}
+
+.add_department {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    float: none; // Override global float if necessary, though flex-end handles alignment
+    margin-bottom: 5px;
+    button {
+        width: auto !important;
+    }
+}

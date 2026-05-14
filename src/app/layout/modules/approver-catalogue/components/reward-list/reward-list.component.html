@@ -1,0 +1,15 @@
+
+<div class="elamm_rewars">
+  <div class="add_department" [routerLink]="['/admin/catalogue-reward/reward']">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="#fef9bd" height="24" width="24"><path d="m9 18-6-6 6-6 1.4 1.4L6.8 11H21v2H6.8l3.6 3.6Z"/></svg>
+  </div>
+  <app-header-bar [title]="'View Reward List'" [hideButton]="true" ></app-header-bar>
+</div>
+<app-smart-search (searchEvent)="searchData($event)" [list]="searchList"></app-smart-search>
+<div class="table_wrap">
+  <app-smart-table 
+  [columns]="columnsHeader" 
+  [receivedData]="filteredList"
+  [searchStr]="querymeter">
+</app-smart-table>
+</div>

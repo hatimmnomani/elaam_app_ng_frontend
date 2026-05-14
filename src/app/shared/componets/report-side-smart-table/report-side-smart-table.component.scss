@@ -1,0 +1,213 @@
+
+.no-faults{text-align: center;}
+.no-record-found{ 
+    border-radius: 10px !important;
+    .material-icons{ vertical-align: middle; margin-top: -2px;}
+}
+
+mat-checkbox ::ng-deep .mat-checkbox-inner-container {width: 22px;height: 22px;}
+
+
+::ng-deep {
+    
+    .mat-column-phonenumber {
+        width: 16%;
+    }
+
+    .mat-column-Question {
+        max-width: 30%;
+        width: 50%;
+    }
+    .mat-column-niyat {
+        width: 30%;
+    }
+
+    .add_department_form .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+        background-color: #9f3021;
+    }
+
+    .add_department_form .mat-checkbox-frame { 
+        border-color: #9f3021; 
+    }
+
+    .mat-checkbox {
+        float: right;
+    }
+
+    .mat-checkbox-checked.mat-accent .mat-checkbox-ripple .mat-ripple-element {
+        opacity: 0.03 !important;
+        background-color: #005691!important;
+    }
+
+    .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+        background-color: #005691;
+    }
+
+    .cdk-column-add-edit-question {
+        width: 92%;
+    }
+
+    button.mat-focus-indicator.mat-icon-button.mat-button-base.ng-star-inserted {
+        color: #58380a;    width: 30px;
+
+    }
+    .pointer-events-none {
+        pointer-events: none;
+    }
+    .cursor-not-allowed{
+        cursor: not-allowed;
+    }
+}
+
+.read{
+    background-color: #fef9bd;
+    font-size: 14px;
+    padding: 5px 30px;
+    border-radius: 5px;
+    color:#e09d48;
+    word-break: normal;
+}
+
+.unread{
+    background-color: #e09d48;
+    font-size: 14px;
+    padding: 5px 30px;
+    border-radius: 5px;
+    color:#fff;
+    word-break: normal;
+}
+
+
+.active{
+    background-color: #1cdd52;
+    font-size: 13px;
+    padding: 5px;
+    border-radius: 5px;
+    color:#fff;
+    word-break: normal;
+    width: 100px;
+    text-align: center;
+    float: left;
+    
+}
+.pending{
+    background-color: #ee1212;
+    font-size: 13px;
+    padding: 5px;
+    border-radius: 5px;
+    color:#fff;
+    float: left;
+    width: 100px;
+    text-align: center;
+}
+
+.completed{
+    background-color: #e7bb4b;
+    font-size: 13px;
+    padding: 5px;
+    border-radius: 5px;
+    color:#fff;
+    word-break: normal;
+    width: 100px;
+    text-align: center;
+    float: left;
+}
+
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom:0px; /* If you want dots under the hoverable text */
+  }
+  
+  /* Tooltip text */
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 170px;
+    background-color: #dd441e;
+    color: #fff;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 6px;
+    left: -30px;
+    bottom: 25px;
+    position: absolute;
+    z-index: 1;
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+    word-break: break-word;
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+  .tooltip-top::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #dd441e transparent transparent transparent;
+}
+
+.checkbox-wrapper,
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+.mat-cell mat-checkbox,
+.mat-header-cell mat-checkbox {
+  margin: auto;
+  display: flex;
+}
+
+.action-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px; /* spacing between icons */
+  min-height: 40px; /* optional: keeps cell height consistent */
+}
+
+.icon-button,
+.action-cell button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 4px !important;
+  height: 32px !important;
+  width: 32px !important;
+  overflow: visible !important;
+}
+
+
+.icon-button img,
+.icon-button mat-icon {
+  height: 20px;
+  width: 20px;
+}
+
+/* Edit, View, and Update icons in Smart Table */
+.action_icon {
+  transition: all 0.2s ease-in-out !important;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.2) !important;
+    color: #b8320a !important;
+  }
+}

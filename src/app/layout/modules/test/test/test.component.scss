@@ -1,0 +1,29 @@
+.gift-reward{
+    text-align: left;
+    .gift-header{
+        padding:0  20px;
+        position: relative;
+        h3{text-align: start;}
+        .close_popup {
+            position: absolute;
+            right: 15px;
+            cursor: pointer;
+            top: 15px;
+        }
+    }
+    .detail_sub{
+        p{
+            text-align: right;
+            span{
+                color: #b73509;
+                font-weight: 600;
+            }
+        }
+    }
+    .input_box {
+        margin-bottom: 0px;
+        label{
+            font-size: 13px;
+       }
+    }
+}

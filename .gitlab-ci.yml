@@ -1,0 +1,228 @@
+image: node:14.16
+cache:
+  paths:
+    - node_modules/
+before_script:
+  - apt-get update -qq && apt-get install
+  - npm install -g @angular/cli@12.2.13
+  - ng --version
+  - npm --version
+  - node --version
+stages:
+  - Coverage
+  - Sonarcheck
+  #- QA_Tag_Release
+  #- Prod_Tag_Release
+  - security_scan_snyk
+  - security_scan_trivy
+  - QABuild
+  - QADeploy
+  - ProdBuild
+  - ProdDeploy
+
+Coverage:
+  stage: Coverage
+  image: node:16-bullseye
+  variables:
+    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project
+    CHROME_BIN: /usr/bin/google-chrome
+  before_script:
+    - apt-get update && apt-get install -y wget gnupg
+    - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+    - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+    - apt-get update
+    - apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 --no-install-recommends
+  script:
+    - npm install --save-dev jest -f
+    - npm test -- --no-watch --no-progress --browsers=ChromeHeadless --code-coverage || true
+    #- echo "Skipping tests"
+  allow_failure: true
+  artifacts:
+    paths:
+      - coverage/lcov.info
+    expire_in: 1 week
+  tags:
+    - elaam-wapp
+  only:
+    - develop
+
+Tools:
+  stage: Sonarcheck
+  image: 
+    name: sonarsource/sonar-scanner-cli:latest
+    entrypoint: [""]
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  before_script:
+    - echo "Skipping global before_script for SonarQube"
+  script: 
+    - sonar-scanner -Dsonar.projectKey=$PROJECT_KEY -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.token=$SONAR_TOKEN
+  allow_failure: true
+  only:
+    - develop
+  tags:
+    - elaam-wapp
+
+#QA_Tag_Release:
+#  stage: QA_Tag_Release
+#  image: registry.gitlab.com/gitlab-org/release-cli:latest
+#  rules:
+#    - if: $CI_COMMIT_BRANCH == "develop"
+#      when: always
+#  script:
+#    - TIME=`date "+%d-%m-%Y-%H-%M-%S"`
+#    - echo "$TIME"
+#    - export QA_COMMIT_TAG="develop-$TIME"
+#    - echo "$QA_COMMIT_TAG"
+#    - release-cli create --name "Release $QA_COMMIT_TAG" --tag-name $QA_COMMIT_TAG
+#  tags:
+#    - elaam-wapp
+
+#Prod_Tag_Release:
+# stage: Prod_Tag_Release
+# image: registry.gitlab.com/gitlab-org/release-cli:latest 
+# rules:
+# - if: $CI_COMMIT_BRANCH == "master"
+# when: always 
+# script:
+# - tag_time=`date "+%d-%m-%Y-%H-%M-%S"`
+# - export Prod_COMMIT_TAG="master-$tag_time"
+# - release-cli create --name "Release $Prod_COMMIT_TAG" --tag-name $Prod_COMMIT_TAG
+# tags:
+#    - elaam-wapp
+
+snyk-security-scan:
+  stage: security_scan_snyk
+  image: node:18-bullseye
+  variables:
+    SNYK_TOKEN: $SNYK_TOKEN
+  before_script:
+    - apt-get update && apt-get install -y curl
+    - curl -sL https://static.snyk.io/cli/latest/snyk-linux -o /usr/local/bin/snyk
+    - chmod +x /usr/local/bin/snyk
+    - snyk auth $SNYK_TOKEN
+  script:
+    - npm install --legacy-peer-deps
+    - snyk code test --severity-threshold=medium || true
+    - snyk test --severity-threshold=medium || true
+    - snyk monitor || true
+  allow_failure: true
+  only:
+    - develop
+  tags:
+    - elaam-wapp
+
+trivy-filesystem-scan:
+  stage: security_scan_trivy
+  image:
+    name: aquasec/trivy:0.59.1
+    entrypoint: [""]
+  before_script:
+    - echo "Skipping global before_script for Trivy"
+  script:
+    - trivy fs --severity MEDIUM,HIGH,CRITICAL . || true
+    - trivy config --severity MEDIUM,HIGH,CRITICAL . || true
+  allow_failure: true
+  only:
+    - develop
+  tags:
+    - elaam-wapp
+
+QA-Build-App: 
+  stage: QABuild
+  script:
+    - export AWS_ACCESS_KEY_ID=$PROD_AWS_ACCESS_KEY_ID
+    - export AWS_SECRET_ACCESS_KEY=$PROD_AWS_SECRET_ACCESS_KEY
+    - export AWS_DEFAULT_REGION=$PROD_AWS_DEFAULT_REGION  
+    - echo "====== Build started ======"
+    - npm install
+    - ng build --configuration=test
+  allow_failure: false
+  only:
+    - sprint18
+    - develop
+  tags:
+    - elaam-wapp
+  timeout: 30 minute
+  when: on_success
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 2 days
+    name: wapp-job-prod-artifact
+    when: on_success
+
+QA-Deploy-App:
+  stage: QADeploy
+  image: python:latest
+  before_script:
+    - echo "====== Installation started ======"
+    - pip install awscli
+    - aws --version
+  dependencies:
+    - QA-Build-App  
+  script:
+    - tar -czf wapp_$(date +"%Y-%m-%d-%H_%M").tar.gz dist/* ;ls -lrth ;new=`ls -lrth | grep -i "wapp_*" | awk '{ print $9}'`;aws s3 cp $new s3://elaam-qa-s3/
+    - aws ssm send-command --document-name "AWS-RunShellScript" --document-version "1" --targets '[{"Key":"tag:Name","Values":["Elaam-QA"]}]' --parameters '{"commands":["cd /home/ubuntu","build=`aws s3 ls s3://elaam-qa-s3/ | grep -i \"wapp\" | tail -n 1 | awk '"'"'{print $4}'"'"'`","aws s3 cp s3://elaam-qa-s3/$build /home/ubuntu/","sudo tar -xzf /home/ubuntu/$build -C /opt/","sudo rm -rf /var/www/html/*","sudo cp -a /opt/dist/elaam/* /var/www/html","sudo rm -rf /home/ubuntu/$build","sudo rm -rf /opt/dist/*"]}' --region us-west-2
+
+  allow_failure: false
+  only:
+    - sprint18
+    - develop
+  tags:
+    - elaam-wapp
+  timeout: 10 minute
+  when: manual
+
+Prod-Build-App:
+  stage: ProdBuild
+  script:
+    - export AWS_ACCESS_KEY_ID=$PROD_AWS_ACCESS_KEY_ID
+    - export AWS_SECRET_ACCESS_KEY=$PROD_AWS_SECRET_ACCESS_KEY
+    - export AWS_DEFAULT_REGION=$PROD_AWS_DEFAULT_REGION  
+    - echo "====== Build started ======"
+    - npm install
+    - ng build --configuration=production
+  allow_failure: false
+  only:
+    - master
+  tags:
+    - elaam-wapp
+  timeout: 20 minute
+  when: on_success
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 2 days
+    name: wapp-job-prod-artifact
+    when: on_success
+
+Prod-Deploy-App:
+  stage: ProdDeploy
+  image: python:latest
+  before_script:
+    - echo "====== Installation started ======"
+    - pip install awscli
+    - aws --version
+    - export AWS_ACCESS_KEY_ID=$PROD_AWS_ACCESS_KEY_ID
+    - export AWS_SECRET_ACCESS_KEY=$PROD_AWS_SECRET_ACCESS_KEY
+    - export AWS_DEFAULT_REGION=$PROD_AWS_DEFAULT_REGION  
+
+  dependencies:
+    - Prod-Build-App  
+  script:
+    - tar -czf wapp_$(date +"%Y-%m-%d-%H_%M").tar.gz dist/* ;ls -lrth ;new=`ls -lrth | grep -i "wapp_*" | awk '{ print $9}'`;aws s3 cp $new s3://elaam-prod/ 
+    - aws ssm send-command --document-name "AWS-RunShellScript" --document-version "1" --targets '[{"Key":"tag:Name","Values":["PROD-ELAAM"]}]' --parameters '{"commands":["cd /home/ubuntu","build=`aws s3 ls s3://elaam-prod/ | grep -i \"wapp\" | tail -n 1 | awk '"'"'{print $4}'"'"'`","aws s3 cp s3://elaam-prod/$build /home/ubuntu/","sudo tar -xzf /home/ubuntu/$build -C /opt/","sudo rm -rf /var/www/html/html/*","sudo cp -a /opt/dist/elaam/* /var/www/html/html/","sudo rm -rf /home/ubuntu/$build","sudo rm -rf /opt/dist/*"],"workingDirectory":[""],"executionTimeout":["3600"]}' --timeout-seconds 600 --max-concurrency "50" --max-errors "0" --cloud-watch-output-config '{"CloudWatchLogGroupName":"elaam-prod-frontend","CloudWatchOutputEnabled":true}' --region ap-south-1
+  allow_failure: false
+  only:
+    - master
+  tags:
+    - elaam-wapp
+  timeout: 10 minute
+  when: manual
+

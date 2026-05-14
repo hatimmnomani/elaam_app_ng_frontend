@@ -1,0 +1,13 @@
+<div class="main_row">
+  <div  *ngFor="let data of  (statusList | async)" class="box1" (click)="cardAction(data)" >
+       <div class="box_wrap" [ngClass]="{'active':data.name === boxstatus}">
+          <i class="art_bg"><img src="../assets/images/wrap_bg_new.png" alt=""/></i>
+          <div class="content_wrap">
+              <p>{{data.value}}</p>
+          </div>
+          <div class="text_wrap">
+              <p>{{data.name}}</p>
+          </div>
+      </div>
+  </div>  
+</div>

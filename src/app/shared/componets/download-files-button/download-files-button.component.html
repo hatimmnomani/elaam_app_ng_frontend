@@ -1,0 +1,30 @@
+ <button *ngIf="!showIcon && !downloadtitle" [matMenuTriggerFor]="download" mat-flat-button class="theme_button mt-0">
+    <span class="material-icons-outlined">
+      download
+    </span>
+    Download
+   <ng-container *ngIf="!showIcon">{{buttonText}}</ng-container>
+  </button>
+  
+  <button *ngIf="downloadtitle" [matMenuTriggerFor]="download"  class="d_download">
+    <span class="material-icons-outlined">
+
+    </span>
+    Download
+  </button>
+  <div *ngIf="showIcon" mat-icon-button [matMenuTriggerFor]="download">
+    download
+  </div>
+  
+  <mat-menu class="download_menu" #download="matMenu">
+    <button mat-menu-item (click)="downloadFile('csv')" *ngIf="showCSV">
+       Download
+      CSV</button>
+    <button mat-menu-item (click)="downloadFile('xls')" *ngIf="showXLS">
+   Download
+      XLS</button>
+  </mat-menu>
+  
+  
+  
+  

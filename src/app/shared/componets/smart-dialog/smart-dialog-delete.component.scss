@@ -1,0 +1,247 @@
+$card-border: 1px solid #f0c457;
+$button-color: #e5b43b;
+.button-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.text-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.imagPath {
+  width: 100%;
+  height: 100%;
+  max-height: 400px;
+  min-height: 350px;
+  max-width: 400px;
+  min-width: 350px;
+}
+
+.imagScanPath {
+  width: 100%;
+  height: 100%;
+  max-height: 800px;
+  min-height: 650px;
+  max-width: 800px;
+  min-width: 650px;
+}
+
+.send_msg_popup .botton_button{
+  border-top: 0px solid #a42c06 !important;
+  padding: 20px 20px 0px 0;
+}
+
+.send_msg_popup h3{
+  padding-top: 0 !important;
+}
+
+::ng-deep {
+  .txt_area .mat-form-field-appearance-fill .mat-form-field-infix {
+    padding: 1.25em 0 .75em 0 !important;
+  }
+  .txt_area .mat-form-field-label {
+    color: rgba(0,0,0,.54);
+  }
+  .input_box .mat-input-element {
+    height: 50px;
+  }
+}
+
+.send_msg_popup.conform_p {
+  position: fixed; /* or absolute depending on need */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999; /* Higher than any other popup/dialog */
+//   background: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+.gift-reward{
+  text-align: left;
+  .gift-header{
+      padding:0  20px;
+      position: relative;
+      h3{text-align: start;}
+      .close_popup {
+          position: absolute;
+          right: -12px;
+          cursor: pointer;
+          top: -15px;
+          z-index: 999;
+      }
+  }
+  .detail_sub{
+      p{
+          text-align: right;
+          span{
+              color: #b73509;
+              font-weight: 600;
+          }
+      }
+  }
+  .input_box {
+      margin-bottom: 0px;
+      label{
+          font-size: 13px;
+     }
+  }
+}
+
+.cancelpop{
+  margin-left:10px!important;
+}
+.mumin_pop{
+  h3{
+    text-align: left;
+  }
+  .content-area-mumin-popup{
+    overflow-y: scroll;
+    height: 250px;
+  }
+  .mimin-pop-table{
+    border: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+    tr{
+      border-bottom: 1px solid #ddd;
+      display: block;
+      th{
+        min-width: 80px;
+        text-align: left;
+        padding: 10px;
+        font-size: 14px;
+        font-weight: 500;
+        border-left: 1px solid #ddd;
+      }
+      td{
+        min-width: 80px;
+        text-align: left;
+        padding: 10px; 
+        font-size: 14px;
+        font-weight: 400;
+        border-left: 1px solid #ddd;
+      }
+      
+    }
+  }
+tr.no-record{
+    border-bottom: 0px !important;
+    text-align: center;
+    td{
+      text-align: center;
+      width: 100%;
+    }
+  }
+ tr:first-child{
+  background: #f3f3f3;
+ } 
+ tr:last-child{
+  border-bottom: 0px !important;
+ } 
+ tr td:first-child,
+ tr th:first-child{
+  border-left: 0px !important;
+  min-width: 50px !important;
+ } 
+.closeconfirm{
+  right: -21px !important;
+}
+
+}
+.piop-3{
+  width: 500px !important;
+}
+
+.viewmumin{
+  max-height: 640px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+.ng-image-slider .ng-image-slider-container .main {
+  overflow: hidden;
+  position: absolute;
+   height: auto !important; 
+  width: 100%;
+}
+.imgContainer1 {
+  min-height: 450px;
+  .imagPath{
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+  }
+}
+
+.search_list{
+  float: left;
+  i.search_icon {
+    left: 6px;
+    top: 0px;
+  }
+  .searchInput{
+    margin-left: 4px;
+  }
+}
+
+.downloadbutton {
+  margin-top: 21px;
+  .d_download {
+    padding: 15px 15px;
+  }
+}
+
+.niyat-question-wrapper {
+  margin: 10px 10px;
+}
+
+.niyat-question-label {
+  font-weight: 600; // same as font-semibold
+  color: #374151;   // similar to Tailwind's text-gray-700
+}
+
+.niyat-question-text {
+  color: #111827;   // similar to Tailwind's text-gray-900
+  margin-top: 4px;
+}
+.dialog-title {
+  margin-left: 8px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+//   padding-bottom: 10px;
+//   border-bottom: 1px solid #e0e0e0;
+}
+
+.All_Selected {
+  background: linear-gradient(to top, #e5b43b 0%, #fff7dc 100%);
+  color: #000;
+  font-weight: bold;
+  padding: 8px 16px;
+  border: 1px solid #f0c457;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.All_Selected:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.disabled-btn {
+  background: #e0e0e0 !important;
+  color: #888888;
+  cursor: not-allowed;
+  pointer-events: none;
+}

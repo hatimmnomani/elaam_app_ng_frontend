@@ -1,0 +1,92 @@
+<app-header-bar [title]="action  +  ' Catalogue Item'" [hideButton]="true" ></app-header-bar>
+
+<div class="add_department_form">
+    <div class="department_form">
+        <form [formGroup]="catalogueForm">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <div fxFlex="25">
+                <div class="input_box">
+                   <label for="exampleInputEmail1">Item Title <span class="astrick">*</span></label>
+                   <mat-form-field apperance="fill">
+                   <input matInput type="search" autocomplete="off" class="input-control" formControlName="itemTitle" required>
+                   <mat-error  *ngIf="!f.itemTitle.valid">{{validationMessages.itemTitle}}</mat-error>
+                   </mat-form-field>
+                </div>
+            </div>
+            <div fxFlex="25">
+                <div class="input_box">
+                   <label for="exampleInputEmail1">Trophies required to Redeem it <span class="astrick">*</span></label>
+                   <mat-form-field apperance="fill">
+                   <input matInput type="search" autocomplete="off" class="input-control" formControlName="trophies" required>
+                   <mat-error  *ngIf="!f.trophies.valid">{{validationMessages.trophies}}</mat-error>
+                   </mat-form-field>
+                </div>
+            </div>
+            <div fxFlex="25">
+                <div class="input_box">
+                  <label for="exampleInputEmail1">Description</label>
+                  <mat-form-field apperance="fill">
+                  <input matInput type="search" autocomplete="off" class="input-control" formControlName="description">
+                  <mat-error  *ngIf="!f.description.valid">{{validationMessages.description}}</mat-error> 
+                  </mat-form-field>
+                </div>
+            </div>
+            <div fxFlex="25">
+              <div class="input_box">
+                <label for="exampleInputEmail1">Catalogue Type</label>
+                <mat-form-field appearance="fill">
+                  <mat-select formControlName="catalogueType"  required>
+                    <mat-option *ngFor="let c of catalogueType" [value]="c.value">{{c.value | titlecase}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+          </div>
+
+           
+          </div>
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <div fxFlex="25">
+              <div class="input_box">
+               <label for="exampleInputEmail1">Maximum Reward <span class="astrick">*</span></label>
+                <mat-form-field apperance="fill">
+                <input matInput type="number" autocomplete="off"  min="1" class="input-control" formControlName="maximumReward">
+                 <mat-error  *ngIf="!f.maximumReward.valid">{{validationMessages.maximumReward}}</mat-error> 
+                </mat-form-field>
+              </div>
+          </div>
+            <div fxFlex="25">
+              <div class="input_box">
+                  <label for="exampleInputEmail1">Status <span class="astrick">*</span></label>
+                  <mat-form-field appearance="fill">
+                    <mat-select formControlName="status" (selectionChange)="getStatus($event.value)" [disabled]='action==="Add"' required>
+                      <mat-option *ngFor="let s of status" [value]="s.value">{{s.value | titlecase}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="!f.status.valid">{{validationMessages.status}}</mat-error>
+                  </mat-form-field>
+              </div>
+           </div>
+
+           <div>
+            <div class="input_box imageUpload">
+              <p class="imageuploadc">Upload Catalogue image </p>
+                <app-upload-Image *ngIf="imageUpload$" (sendImageEvent)="sendImageEvent($event)" [imageUpload]="imageUpload$.asObservable()"></app-upload-Image>
+                    
+          </div>
+       
+        </div> 
+            <!-- <div fxFlex="25">
+                <div class="input_box">
+                  <label for="exampleInputEmail1">Upload Catalogue image</label>
+                  <input matInput type="text" class="input-control" id=""   placeholder="">
+                    <div class="broswe_file">
+                      <input id="file-upload" formControlName="logoPath" value="" type="file"/><span class="browse">Browse</span> <span class="text_choose">No File Chosen</span></div>
+                </div>
+              </div> -->
+          </div>
+        </form>
+    </div>
+    <div class="botton_button">
+        <button  type="button" (click)="openDialog()" class="cancel_button submit_button">Cancel</button>
+        <button  type="button" (click)="onSubmit()" class="submit_button">Submit</button>
+      </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="heading_bar">
+    <h1>Preview Template</h1>
+</div>
+<div class="add_department pre_save">
+    <button type="button" (click)="onSubmit('export')">{{ action }} & Export</button>
+    <button type="button" (click)="onSubmit('save')">{{ action }}</button>
+    <button type="button" [routerLink]="'/admin/niyat-template/add'">Back </button>
+</div>
+
+<div class="add_department_form">
+    <form [formGroup]="previewTemplateForm">
+        <div class="department_form">
+            <div class="name_feild">
+                <div class="input_box">
+                    <label for="exampleInputEmail1">Template Name <span class="astrick">*</span></label>
+                        <mat-form-field apperance="fill">
+                        <input matInput type="search" formControlName="templateName" autocomplete="off" class="input-control"  required>
+                        <mat-error  *ngIf="!f.templateName.valid">Template {{validationMessages.templateName}}</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="questio_list">
+            <h4>List of Questions</h4>
+        </div>
+        <div class="list_view" *ngFor="let question of questionList; let i = index">
+            <p>{{i+1}}.  {{ question.question_eng }}</p>
+            <div class="list_radio" *ngIf="question.questype == 'RADIO'">
+                <mat-radio-group aria-label="Select an option" disabled>
+                    <mat-radio-button value="1">Yes </mat-radio-button>
+                    <mat-radio-button value="2">No </mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div class="view_feild" *ngIf="question.questype != 'RADIO'">
+                <div class="wrap_pre">
+                    <div class="input_box">
+                        <mat-form-field apperance="fill">
+                            <input matInput type="search" autocomplete="off" class="input-control"  readonly>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <p>4.  I commit to help a Mumin Student yb contributing</p>
+            <div class="view_feild">
+                <div class="wrap_pre">
+                    <div class="input_box">
+                        <mat-form-field apperance="fill">
+                            <input matInput type="search" autocomplete="off" class="input-control"  required>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>  -->
+
+        </div>
+    </form>
+</div>

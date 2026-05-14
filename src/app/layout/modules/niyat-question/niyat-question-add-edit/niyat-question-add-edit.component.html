@@ -1,0 +1,114 @@
+<app-header-bar [title]="action + ' Niyat Question'"  [hideButton]="true" ></app-header-bar>
+<div class="add_department">
+  <button (click)="openDialog()"  type="button">Back</button>
+  <button *ngIf="action === 'EDIT'" (click)="cloneRecord()" type="button">Clone Niyat Question</button>
+</div>
+
+<div class="add_department_form">
+  <div class="department_form">
+      <form [formGroup]="niyatQuestionForm">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div fxFlex="100">
+              <div class="input_box full_wd">
+                <label for="exampleInputEmail1">Question in English <span class="astrick">*</span></label>
+                <mat-form-field apperance="fill">
+                <input matInput type="search" autocomplete="off" class="input-control" formControlName="questionenglish" required>
+                <mat-error  *ngIf="!f.questionenglish.valid">{{validationMessages.questionenglish}}</mat-error>
+              </mat-form-field>
+              </div>
+            </div>
+        </div>
+        
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <div fxFlex="100">
+            <div class="input_box full_wd">
+              <label for="exampleInputEmail1">Question in Arabic</label>
+              <mat-form-field apperance="fill">
+              <input matInput type="search" autocomplete="off" class="input-control arabicTest" formControlName="questionarabic">
+              <mat-error  *ngIf="!f.questionarabic.valid">{{validationMessages.questionarabic}}</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" >
+          <div fxFlex="25">
+              <div class="input_box">
+                <label for="exampleInputEmail1">Niyat Type <span class="astrick">*</span></label>
+                <mat-form-field appearance="fill">
+                    <mat-select formControlName="niyatTypeId"> 
+                      <mat-option *ngFor="let data of niyatTypeList" [disabled]='action==="EDIT"' [value]="data.id" >{{data.name | titlecase}}</mat-option>
+                    </mat-select>
+                    <mat-error  *ngIf="!f.niyatTypeId.valid">{{validationMessages.niyatTypeId}}</mat-error>
+                  </mat-form-field>
+              </div>
+          </div>
+
+          <div fxFlex="25">
+              <div class="input_box">
+                <label for="exampleInputEmail1">Umoor <span class="astrick">*</span></label>
+                <mat-form-field appearance="fill">
+                    <mat-select formControlName="umoorName">
+                      <mat-option *ngFor="let data of umoorList" [value]="data.umoorName">{{data.umoorName | titlecase}}</mat-option>
+                    </mat-select>
+                    <mat-error  *ngIf="!f.umoorName.valid">{{validationMessages.umoorName}}</mat-error>                  
+                  </mat-form-field>
+              </div>
+          </div>
+
+          <div fxFlex="25">
+              <div class="input_box">
+                <label for="exampleInputEmail1">Department <span class="astrick">*</span></label>
+                <mat-form-field appearance="fill">
+                    <mat-select formControlName="departmentName">
+                      <mat-option *ngFor="let data of departmentList" [value]="data.departmentName">{{data.departmentName | titlecase}}</mat-option>
+                    </mat-select>
+                    <mat-error  *ngIf="!f.departmentName.valid">{{validationMessages.departmentName}}</mat-error>                  
+                  </mat-form-field>
+              </div>
+          </div>
+          
+          <div fxFlex="25">
+              <div class="input_box">
+                <label for="exampleInputEmail1">Choose Type <span class="astrick">*</span></label>
+                <mat-form-field appearance="fill">
+                    <mat-select formControlName="questionTypeId">
+                      <mat-option *ngFor="let data of questionTypeList" [value]="data.id">{{data.questionLabel | titlecase}}</mat-option>
+                    </mat-select>
+                    <mat-error  *ngIf="!f.questionTypeId.valid">{{validationMessages.questionTypeId}}</mat-error> 
+                  </mat-form-field>
+              </div>
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div fxFlex="25">
+                <div class="input_box">
+                  <label for="exampleInputEmail1">Trophy Count </label>
+                  <mat-form-field apperance="fill">
+                  <input matInput type="search" autocomplete="off" class="input-control" formControlName="trophycount"  tabIndex="7">
+                  <mat-error  *ngIf="!f.trophycount.valid">{{validationMessages.trophycount}}</mat-error> 
+                </mat-form-field>
+                </div>
+              </div>
+
+              <div fxFlex="25">
+                <div class="input_box">
+                  <label for="exampleInputEmail1">Status <span class="astrick">*</span></label>
+                  <mat-form-field appearance="fill">
+                      <mat-select formControlName="niyatstatus" (selectionChange)="onChangeNiyatStatus($event)" [disabled]='action === "Add"'>
+                        <mat-option *ngFor="let s of status" [value]="s.value">{{s.value | titlecase}}</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="!f.niyatstatus.valid">{{validationMessages.niyatstatus}}</mat-error>                       
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+      </form>
+  </div>
+
+  <div class="botton_button">
+    <button mat-button (click)="openDialog()" class="cancel_button submit_button">Cancel</button>
+    <button mat-button (click)="onSubmit()" class="submit_button">Submit</button>
+  </div>
+</div>

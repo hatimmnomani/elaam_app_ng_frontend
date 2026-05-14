@@ -1,0 +1,20 @@
+<app-header-bar
+  [title]="'Khidmat Ramadaniyah'"
+  [path]="'/admin/khidmat-ramadaniyah/add'"
+  [buttonName]="'Assign Role'"
+  [hideButton]="userRole === 'Khidmat Ramadaniyah'"
+></app-header-bar>
+
+<app-smart-search (searchEvent)="searchData($event)" (textSearch)="searchData($event)" [list]="searchList" [placeholder]="'Search ITS ID'"></app-smart-search>
+
+<div class="table_wrap">
+  <app-server-side-smart-table
+    [columns]="columnsdata"
+    (tableRecord)="fetchedRecord($event)"
+    [service]="khidmatService"
+    [searchStr]="query"
+    [editBtn]="userRole !== 'Khidmat Ramadaniyah'"
+    [statusBtn]="userRole !== 'Khidmat Ramadaniyah'"
+  >
+  </app-server-side-smart-table>
+</div>

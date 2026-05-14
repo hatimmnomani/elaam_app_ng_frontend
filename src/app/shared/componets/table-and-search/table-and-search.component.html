@@ -1,0 +1,44 @@
+<div style="margin-top: 40px;">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div></div> <!-- Empty div to push button to right -->
+    <button *ngIf="parent_id > 0" type="button" (click)="handleBack()" class="submit_button">Back</button>
+  </div>
+  <div class="report_search">
+    <ng-container *ngIf="current_api_type === 'getNiyatListV2'; then normalsearch else dropdownsearch"></ng-container>
+    <ng-template #normalsearch>
+      <div class="search_list" style="display: flex; justify-content: flex-end; margin-top: 10px;">
+        <form class="example-form">
+            <mat-form-field class="example-full-width" appearance="fill">
+                <input type="text" matInput [formControl]="searchControl" placeholder="{{searchPlaceholder}}" maxlength="8" min="1" max="99999999" autocomplete="off" (keypress)="allowOnlyNumbers($event)" (keyup.enter)="onEnter($event, false)" (keydown)="onKeyDown($event)">
+                <!-- <input type="text" matInput placeholder="{{searchPlaceholder}}" maxlength="8" min="1" max="99999999" autocomplete="off" (keypress)="allowOnlyNumbers($event)" (keyup.enter)="onEnter($event)" (keydown)="onKeyDown($event)"> -->
+                <i class="search_icon" ><mat-icon aria-hidden="false" aria-label="Example search icon">search</mat-icon></i>
+                <!-- cross button clear input text -->
+                <i class="clearbtn" *ngIf="searchControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="emptySearch()" style="vertical-align: middle;">
+                  <mat-icon>close</mat-icon>
+                </i>
+            </mat-form-field>
+        </form>
+      </div>
+    </ng-template>
+    <ng-template #dropdownsearch>
+      <app-smart-search #autoSearch (searchEvent)="onSearch($event)" [value]="searchText" [list]="searchList" [placeholder]="searchPlaceholder"></app-smart-search>
+    </ng-template>
+  </div>
+  <!-- <app-smart-search (searchEvent)="onSearch($event)" [value]="searchText" [list]="searchList" [placeholder]="searchPlaceholder"></app-smart-search> -->
+</div>
+<div class="table_wrap">
+  <app-smart-table
+    [columns]="columnsHeader"
+    [receivedData]="tableData"
+    (tableRecord)="handleTableRecord($event)"
+    (pageChange)="onPageChange($event)"
+    [pageNumber]="pageNumber"
+    [pageSize]="pageSize"
+    [totalRecords]="totalRecords"
+    [isServerSide]="isServerSide"
+    [centerFocus]="showCenterFocus"
+    [centerFocusinfo]="showCenterFocusInfo"
+    [qrCodeScanBtn]="showQrCodeScan"
+  >
+  </app-smart-table>
+</div>

@@ -1,0 +1,145 @@
+.astrick {
+    color: red;
+}
+
+.user-name-display {
+    font-size: 14px;
+    color: #b8320a;
+    margin-top: -15px;
+    padding-bottom: 10px;
+    font-weight: 500;
+}
+
+.input-control:disabled {
+    background-color: #f1f1f1 !important;
+    cursor: not-allowed;
+    color: #666;
+}
+
+.error-text {
+    color: red;
+    font-size: 11px;
+    margin-top: -15px; /* Pull up to match project style */
+    display: block;
+}
+
+::ng-deep {
+    /* ITS ID Fix - Let the global input-control style take over */
+    .mat-form-field-appearance-fill .mat-form-field-flex {
+        background-color: transparent !important;
+        border: none !important;
+        height: auto !important;
+        padding: 0 !important;
+    }
+
+    /* Jamaat Select - Match the theme manually since it can't use .input-control */
+    .jamaat-field {
+        .mat-form-field-wrapper {
+            padding-bottom: 20px !important; /* Space for mat-error */
+        }
+
+        .mat-form-field-appearance-fill .mat-form-field-flex {
+            background-color: #fdf9e4 !important;
+            border: 1px solid #b8320a !important;
+            border-radius: 4px !important;
+            min-height: 38px !important;
+            height: auto !important;
+            padding: 0 10px !important;
+            display: flex !important;
+            align-items: center !important;
+        }
+
+        .mat-form-field-infix {
+            border-top: 0 !important;
+            padding: 5px 0 !important; /* Small padding for better vertical alignment */
+        }
+
+        .mat-select-value {
+            vertical-align: middle !important;
+            padding-right: 70px !important; /* Space for both arrow and clear */
+        }
+
+        .mat-form-field-underline {
+            display: none !important;
+        }
+
+        .mat-error {
+            font-size: 11px;
+            margin-top: 2px;
+            color: #f44336; /* Material Red */
+        }
+    }
+}
+
+.search-container {
+    padding: 10px;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 8px 30px 8px 12px;
+    width: 100%;
+    background: #fdf9e4;
+    outline: none;
+}
+
+::ng-deep .mat-select-panel {
+    max-height: 400px !important;
+}
+
+/* Clear icon positioned between the text and the dropdown arrow */
+.clear-icon-select {
+  position: absolute;
+  right: 18px; /* aligns nicely before dropdown arrow */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #b8320a;
+  font-size: 20px;
+  z-index: 2;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-50%) scale(1.2);
+    filter: brightness(1.2);
+  }
+}
+
+.submit_button {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    filter: brightness(1.05);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  &.cancel_button:hover {
+    // background-color: #fcebeb !important;
+    color: #b8320a !important;
+    border-color: #b8320a !important;
+  }
+}
+
+.search-container mat-icon {
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.2);
+    filter: brightness(1.2);
+  }
+}

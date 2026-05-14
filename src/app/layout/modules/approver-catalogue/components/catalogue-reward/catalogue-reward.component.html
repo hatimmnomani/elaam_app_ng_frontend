@@ -1,0 +1,84 @@
+<app-header-bar [title]="'Catalogues'"  [hideButton]="true"></app-header-bar>
+
+<div class="add_department_form" *ngIf="(redeemTrophiesData$ | async) && userRole != 'Super Admin'">
+    <div class="mumnin_reward">
+        <div class="trophy_level trophy_achieve">
+            <div class="add_department">
+                <button type="button" [routerLink]="['/admin/catalogue-reward/list']" >VIEW REWARD LIST</button>
+            </div>
+            <div class="level_count">
+                <img src="../assets/images/trophy-blue.png" alt="" />
+                <div class="txt_overlay txt_overlay2"><p>{{(redeemTrophiesData$ | async).totalTrophies}}</p></div>
+            </div>
+            <p>Trophies Redeemed - {{(redeemTrophiesData$ | async).trophiesRedeemed}}</p>
+            <p>Trophies Balance - {{(redeemTrophiesData$ | async).remainingTrophies}}</p>
+        </div>
+
+    </div>
+</div>
+
+<div class="add_department_form" *ngIf="!(redeemTrophiesData$ | async) && userRole != 'Super Admin'">
+    <div class="mumnin_reward">
+        <div class="trophy_level trophy_achieve">
+            <div class="add_department">
+                <button type="button" [routerLink]="['/admin/catalogue-reward/list']" >VIEW REWARD LIST</button>
+            </div>
+            <div class="level_count">
+                <img src="../assets/images/trophy-blue.png" alt="" />
+                <div class="txt_overlay txt_overlay2"><p>0</p></div>
+            </div>
+            <p>Trophies Redeemed - 0</p>
+            <p>Trophies Balance - 0</p>
+        </div>
+
+    </div>
+</div>
+<div class="heading_bar2">
+    <div class="catalogue-tab mycatalogue_tab" >
+        <mat-tab-group animationDuration="3ms" (selectedTabChange)="againCall()">
+        <mat-tab label="Redeem Your Trophy">
+            <div class="add_department_form" *ngIf="catalogueList$">
+                <div class="department_form">
+                    <div fxLayout="row wrap" fxLayoutAlign="start center" >
+                        <div fxFlex.gt-sm="50%" fxFlex.gt-xs="100%" style="cursor: pointer;" fxFlex.gt-md="25%" *ngFor="let data of redeemYourTrophy">
+                            <div class="card_view_catalogue">
+                                <div class="view_icon" (click)="viewImage(data?.image_url)">
+                                    <span class="material-icons hover-text">aspect_ratio</span>
+                                   
+                                </div>
+                                    <div class="catalogue_circle" (click)="catalogueInfo(data.itemTitle, data.description)">
+                                        <img [src]="data?.image_url?data?.image_url : imgPath"  alt="" />
+                                </div>
+                               <button class="redeem_trophy" (click)="redeemConfirm(data)">Redeem For {{data.trophies}} Trophies</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="My Achievements">
+        <div class="add_department_form">
+                <div class="department_form">
+                    <div fxLayout="row wrap" fxLayoutAlign="start">
+                        <div fxFlex.gt-sm="50%" fxFlex.gt-xs="100%"  fxFlex.gt-md="25%" *ngFor="let data of myAchievements">
+                            <div class="card_view_catalogue">
+                                <div class="view_icon" (click)="viewImage(data?.image_url)">
+                                    <span class="material-icons hover-text">aspect_ratio</span>
+                                </div>
+                                <div class="edit_icon" *ngIf="data?.ack>1"> {{data?.ack}} </div>
+                                    <div class="catalogue_circle" (click)="catalogueInfo(data.itemTitle, data.description)">
+                                        <img [src]="data?.image_url?data?.image_url : imgPath" alt="" />
+                                </div>
+                                <button class="redeem_trophy height_49"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+</div>
+
+

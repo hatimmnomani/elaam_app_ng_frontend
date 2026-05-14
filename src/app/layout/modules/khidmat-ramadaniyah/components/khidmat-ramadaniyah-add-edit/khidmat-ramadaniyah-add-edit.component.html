@@ -1,0 +1,108 @@
+<app-header-bar
+  [title]="action + ' Khidmat Ramadaniyah Role'"
+  [hideButton]="true"
+></app-header-bar>
+
+<div class="add_department_form">
+  <div class="department_form">
+    <form [formGroup]="roleForm">
+      <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="30px">
+        <div fxFlex="33">
+          <div class="input_box">
+            <label for="itsId">ITS ID <span class="astrick">*</span></label>
+            <mat-form-field apperance="fill">
+              <input
+                matInput
+                type="text"
+                autocomplete="off"
+                class="input-control"
+                formControlName="itsId"
+                maxlength="8"
+              />
+              <mat-error *ngIf="f.itsId.errors?.required">
+                ITS ID is required
+              </mat-error>
+              <mat-error *ngIf="f.itsId.errors?.pattern && !f.itsId.errors?.required">
+                ITS ID must be 8 digits
+              </mat-error>
+              <mat-error *ngIf="f.itsId.errors?.invalidItsId && !f.itsId.errors?.pattern && !f.itsId.errors?.required">
+                Invalid ITS ID
+              </mat-error>
+            </mat-form-field>
+            <div class="user-name-display" *ngIf="userName">{{ userName }}</div>
+          </div>
+        </div>
+        <div fxFlex="33">
+          <div class="input_box jamaat-field">
+            <label for="jamaatId">Jamaat <span class="astrick">*</span></label>
+            <mat-form-field appearance="fill">
+              <mat-select
+                formControlName="jamaatId"
+                multiple
+                placeholder="Select Jamaat"
+              >
+                <div class="search-container">
+                  <input
+                    type="text"
+                    placeholder="Search Jamaat..."
+                    [formControl]="jamaatSearchControl"
+                    (keydown)="$event.stopPropagation()"
+                    class="search-input"
+                  />
+                  <mat-icon
+                    *ngIf="jamaatSearchControl.value"
+                    (click)="clearJamaatSearch(); $event.stopPropagation()"
+                    style="
+                      margin-left: -30px;
+                      cursor: pointer;
+                      color: #b8320a;
+                      font-size: 20px;
+                      width: 20px;
+                      height: 20px;
+                      vertical-align: middle;
+                    "
+                    >close</mat-icon
+                  >
+                </div>
+                <mat-option
+                  *ngFor="let jamaat of filteredJamaats | async"
+                  [value]="jamaat.id"
+                >
+                  {{ jamaat.jamaatName }}
+                </mat-option>
+              </mat-select>
+              <mat-icon
+                matSuffix
+                class="clear-icon-select"
+                *ngIf="f.jamaatId.value && f.jamaatId.value?.length > 0"
+                (click)="clearJamaatSelection(); $event.stopPropagation()"
+                >close</mat-icon
+              >
+              <mat-error *ngIf="f.jamaatId.errors?.required"
+                >Jamaat is required</mat-error
+              >
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="botton_button">
+    <button
+      type="button"
+      (click)="cancel()"
+      class="submit_button cancel_button"
+    >
+      Cancel
+    </button>
+    <button
+      type="button"
+      (click)="onSubmit()"
+      class="submit_button"
+      [disabled]="disableBtn"
+    >
+      Submit
+    </button>
+  </div>
+</div>

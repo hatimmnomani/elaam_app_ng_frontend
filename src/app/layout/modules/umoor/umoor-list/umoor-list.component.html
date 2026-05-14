@@ -1,0 +1,13 @@
+
+  <app-header-bar [title]="'umoors'" [path]="'/admin/umoor/add'" [buttonName]="'Add umoor'" ></app-header-bar>
+
+
+<div class="table_wrap">
+  <app-smart-table 
+  [columns]="columnsHeader" 
+  [receivedData]="umoorList"
+  (tableRecord)="fetchedRecord($event)"
+  [editBtn]="true"
+  [statusBtn]="true">
+</app-smart-table>
+</div>

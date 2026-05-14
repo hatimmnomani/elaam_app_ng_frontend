@@ -1,0 +1,139 @@
+<div class="send_msg_popup">
+    <mat-icon class="material-icons-outlined action_icon close_popup" (click)="onNoClick()" >
+        close
+      </mat-icon>
+    <div class="add_department_form">
+        <div class="department_form">
+           
+            <div class="heading_bar"><h1>Dynamic Report</h1></div>
+            <form class="width100" [formGroup]="advSearchForm">
+            <div class="report_row">
+                <div class="pupup-div" fxLayout="row " fxLayoutAlign="start center" fxLayoutGap="20px">
+                    <div>
+                        <mat-form-field appearance="fill">
+                            <input matInput [formControl]="searchControl" formControlName="itsId" placeholder="Enter ITS ID" maxlength="8"
+                                autocomplete="off">
+                                
+                               
+                        </mat-form-field>
+                        <mat-error  *ngIf="f.itsId?.invalid">Please enter valid 8 digit ITS ID</mat-error>
+                    </div>
+                    <div class="select_act">
+                        <mat-form-field>
+                            <mat-label>All Department</mat-label>
+                            <mat-select (selectionChange)="departmentData($event)" formControlName="departmentName" multiple>
+                              
+                                <mat-option *ngFor="let s of departmentDataList"
+                                    value={{s?.departmentId}}>{{s?.departmentName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="pupup-div" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                    <div class="select_act">
+                        <mat-form-field>
+                            <mat-label>All Jamiat</mat-label>
+                            <mat-select (selectionChange)="jamiatData($event)" formControlName="Jamiat" multiple>
+                                <mat-option *ngFor="let s of jamiatDataList" value={{s?.id}}>{{s?.jamiatName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="select_act">
+                        <mat-form-field>
+                            <mat-label>All Jamaat</mat-label>
+                            <mat-select formControlName="Jamaat" multiple>
+                                <mat-option *ngFor="let s of jamaatDataList" value={{s?.id}}>{{s?.jamaatName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+                </div>
+                <div class="pupup-div" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                    <div class="select_act">
+                        <mat-form-field>
+                            <mat-label>All Umoor</mat-label>
+                            <mat-select formControlName="Umoor" multiple>
+                                <mat-option *ngFor="let s of umoorDataList" value={{s?.umoorId}}>{{s?.umoorName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="select_act">
+                        <mat-form-field>
+                            <mat-label>All Question</mat-label>
+                            <mat-select multiple formControlName="niyatQuestion" multiple>
+                                <mat-option *ngFor="let s of questionDataList" value={{s?.id}}>{{s?.question_eng}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="pupup-div" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">       
+                         <div>
+                                <mat-form-field appearance="fill">
+                                    <input placeholder="Enter min age" type="number" min="0" max="100" matInput
+                                        autocomplete="off" formControlName="minage">
+                                    <mat-error *ngIf="!f.minage.valid">{{validationMessages.minAge}}</mat-error>
+
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <mat-form-field appearance="fill">
+                                    <input placeholder="Enter max age" type="number" min="0" max="100" matInput
+                                        autocomplete="off" formControlName="maxage"
+                                        (change)="checkAge(f.minage.value,f.maxage.value)">
+                                    <mat-error *ngIf="!f.maxage.valid">{{validationMessages.maxAge}}</mat-error>
+
+                                </mat-form-field>
+                                <mat-error *ngIf="showMaxError">{{validationMessages.minMaxNumber}}</mat-error>
+                            </div>
+                </div>
+                <div class="pupup-div" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                    <div class="select_act">
+                        <mat-form-field>
+                            <mat-select (selectionChange)="onSelectionChange($event)" [(value)]="selected">
+                                <mat-option [value]='6'>Select Date</mat-option>
+                                <mat-option *ngFor="let s of advanceSearchKey" [value]="s.id">{{s.value |
+                                    titlecase}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="select_act">
+                        <mat-form-field>
+                            <mat-label>Select Status</mat-label>
+                            <mat-select formControlName="status">
+                                <mat-option *ngFor="let s of allStatus" [value]="s.id">{{s.value}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+                </div>
+                <div class="pupup-div" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                    <div *ngIf="selectedFValue == 'By date'">
+                        <div>
+                            <mat-form-field appearance="fill">
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate formControlName="startDate" placeholder="Start date">
+                                    <input matEndDate formControlName="endDate" placeholder="End date">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+
+                                <mat-error *ngIf="!f.startDate.valid">Invalid start date</mat-error>
+                                <mat-error *ngIf="!f.endDate.valid">Invalid end date</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                </div>
+                
+            </div>
+              <div class="se_btn_wrap" fxLayoutAlign="center center">
+                <button type="button" (click)="onSubmit()" class="submit_button">Generate Report</button>
+              </div>
+            </form>
+        </div>
+
+    </div>
+</div>

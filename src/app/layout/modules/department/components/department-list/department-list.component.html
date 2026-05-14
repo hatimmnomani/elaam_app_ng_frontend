@@ -1,0 +1,14 @@
+
+  <app-header-bar [title]="'Departments'"  [path]="'/admin/department/add'" [buttonName]="'Add Department'" ></app-header-bar>
+
+
+  <div class="table_wrap">
+    <app-smart-table 
+    [columns]="columnsHeader" 
+    [receivedData]="departmentList"
+    (tableRecord)="fetchedRecord($event)"
+    [editBtn]="true"
+    [statusBtn]="true">
+  </app-smart-table>
+  </div>
+  

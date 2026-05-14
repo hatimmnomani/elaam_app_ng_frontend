@@ -1,0 +1,65 @@
+<div layout="row">
+    <app-header-bar [title]="'Mumin Dashboard'"  [hideButton]="true"></app-header-bar>
+    <app-month-section style="float: right;"  (messageEvent)="getDate($event)"></app-month-section>
+    <app-toggle-box *ngIf="niyatStatusList$" [status]="niyatStatusList$.asObservable()" (cardEvent)="getniyatDataBx($event)"></app-toggle-box>
+    
+    <!--Start Mumnin Reward session -->
+    <div class="add_department_form">
+        <div class="heading_texture">
+            <h2>Reward</h2>
+        </div>
+        <div class="mumnin_reward">
+            <div class="gold_level">
+                <div class="level_count">
+                    <img src="../assets/images/level.png" alt="" />
+                    <div class="txt_overlay"><p>500</p></div>
+                </div>
+                <p>Level - Gold </p>
+            </div>  
+            <div class="trophy_level ">
+                <div class="level_count">
+                    <img src="../assets/images/trophy.png" alt="" />
+                    <div class="txt_overlay txt_top"><p>{{(redeemTrophiesData$ | async).trophiesRedeemed + (redeemTrophiesData$ | async).remainingTrophies}}</p></div>
+                </div>
+                <p>Trophies Redeemed - {{(redeemTrophiesData$ | async).trophiesRedeemed}}</p>
+                <!-- <p>Trophies Balance - {{(redeemTrophiesData$ | async).remainingTrophies}}</p> -->
+            </div>
+
+            <div class="total_niyat">
+                <div class="level_count">
+                    <img src="../assets/images/niyat_done.png" alt="" />
+                    <div class="txt_overlay"><p>{{ toatlNiyatsCount }}</p></div>
+                </div>
+                <p>Total Niyat Done- All over the World</p>
+            </div>
+            <div class="redeem_btn">
+                <button  type="button" class="submit_button" routerLink="/catalogue">Redeem Now</button>
+            </div>
+        </div>
+    </div>
+    <!--end Mumnin Reward session -->
+</div>
+
+<!-- Table  -->
+<div style="margin-top: 40px;">
+    <app-header-bar [title]="niyatStatusName + ' Niyat'"  [hideButton]="true"></app-header-bar>
+    <app-smart-search (searchEvent)="searchData($event)" [list]="searchList"></app-smart-search>
+</div>
+  
+
+<div class="table_wrap">
+   
+    <app-server-side-smart-table 
+    [columns]="columnsHeader"
+    (tableRecord)="fetchedRecord($event)" 
+    [service]="niyatDataService" 
+    [searchStr]="query" 
+    [filters]="objJSONString"
+    [scan]="true"
+    [centerFocusinfo]="true">
+  </app-server-side-smart-table>  
+</div>
+   
+
+
+

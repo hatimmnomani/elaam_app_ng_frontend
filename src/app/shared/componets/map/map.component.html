@@ -1,0 +1,9 @@
+			<!-- Map -->
+			<div *ngIf="coords" leaflet style="height: 400px;"
+				 [leafletOptions]="options"
+				 [leafletMarkerCluster]="markerClusterData"
+				 [leafletMarkerClusterOptions]="markerClusterOptions"
+				 (leafletMarkerClusterReady)="markerClusterReady($event)">
+			</div>
+
+		

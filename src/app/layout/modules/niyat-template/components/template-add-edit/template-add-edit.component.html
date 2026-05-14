@@ -1,0 +1,80 @@
+<app-header-bar [title]="action + ' Template'" [hideButton]="true"></app-header-bar>
+
+<div class="add_department" *ngIf="action == 'EDIT'" style="margin-left: 15px;">
+    <button (click)="onClone()" type="button" class="add_department">
+        <mat-icon class="material-icons-outlined" style="font-size: 20px; vertical-align: middle; margin-right: 5px;">copy_all</mat-icon>
+        Clone Template
+    </button>
+</div>
+
+<app-header-bar *ngIf="action != 'EDIT'" (click)="redirectToPreview()" [buttonName]="'Preview Template'" ></app-header-bar>
+
+<app-header-bar *ngIf="action == 'EDIT'" (click)="redirectToPreview2()" [buttonName]="'Preview Template'" ></app-header-bar>
+
+
+<div class="add_department_form">
+  <form [formGroup]="templateForm">
+    <div class="department_form">
+        <div class="name_feild">
+            <div class="input_box">
+                <label for="exampleInputEmail1">Template Name<span class="astrick">*</span></label>
+                    <mat-form-field apperance="fill">
+                    <input matInput type="search" formControlName="templateName" autocomplete="off" class="input-control"  required>
+                    <mat-error  *ngIf="!f.templateName.valid">Template {{validationMessages.templateName}}</mat-error>
+                  </mat-form-field>
+            </div>
+        </div>
+        <div class="input_select">
+            <div class="select_umoor">
+                <div class="input_box">
+                    <label for="exampleInputEmail1">Umoor </label>
+                    <mat-form-field appearance="fill">
+                      <mat-select (selectionChange)="getUmoorName($event.value)" placeholder="Select Umoor" [(value)]="selectedUmoor">
+                        <mat-option *ngFor="let data of umoorList" [value]="data.umoorName">{{data.umoorName | titlecase}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="select_umoor">
+                <div class="input_box">
+                    <label for="exampleInputEmail1">Department </label>
+                    <mat-form-field appearance="fill">
+                      {{ selected }}
+                      <mat-select (selectionChange)="getDepartmentName($event.value)" placeholder="Select Department" [(value)]="selectedDepartment">
+                        <mat-option *ngFor="let data of departmentList" [value]="data.departmentName">{{data.departmentName | titlecase}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="questio_list">
+      <h4>Selected Questions</h4>
+    </div>
+    
+    <app-smart-table
+      [columns]="columnsHeader"
+      [hideHeader]="'none'"
+      [receivedData]="checkedArray"
+      (tableRecord)="fetchedRecord2($event)">
+    </app-smart-table>
+
+
+    <div class="questio_list">
+        <h4>List of Questions</h4>
+    </div>
+
+    <app-smart-table
+      [columns]="columnsHeader"
+      [hideHeader]="'none'"
+      [receivedData]="questionList$"
+      (tableRecord)="fetchedRecord($event)">
+    </app-smart-table>
+
+    <div class="botton_button">
+        <button type="button" (click)="openDialog()" class="cancel_button submit_button">Cancel</button>
+      <button type="button" (click)="onSubmit()" class="submit_button">Save Template</button>
+    </div>
+  </form>
+</div>

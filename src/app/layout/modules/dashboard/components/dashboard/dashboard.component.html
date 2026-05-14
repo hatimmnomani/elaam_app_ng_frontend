@@ -1,0 +1,61 @@
+<div layout="row">
+    <app-header-bar [title]="'Dashboard'"  [hideButton]="true"></app-header-bar>
+    
+    <app-month-section style="float: right;" [(selected)]="selectedMonthId"  (messageEvent)="getDate($event)"></app-month-section>
+
+    <app-toggle-box *ngIf="niyatStatusList$" [status]="niyatStatusList$.asObservable()" [selectedName]="niyatStatusName" (cardEvent)="getniyatDataBx($event)"></app-toggle-box>
+
+    <div class="tab_wrap_content2" *ngIf="(redeemTrophiesData$ | async) && userRole != 'Super Admin'">
+      <div class="flex-fill1">
+          <div>
+             <img src="../../assets/images/trophy-blue.png">
+             <span>{{(redeemTrophiesData$ | async).totalTrophies}}</span>
+          </div>
+      </div>
+      <div class="flex-fill2">
+          <div class="off-text1">Trophies Redeemed - {{(redeemTrophiesData$ | async).trophiesRedeemed}}</div>
+          <div class="off-text2">
+            <button  type="button" class="submit_button" *ngIf="userRole !== 'Khidmat Ramadaniyah'" [routerLink]="['/admin/catalogue-reward/reward']">Redeem Now</button>
+          </div>
+      </div>
+    </div>
+    <div class="tab_wrap_content2" *ngIf="!(redeemTrophiesData$ | async) && userRole != 'Super Admin'">
+      <div class="flex-fill1">
+          <div>
+             <img src="../../assets/images/trophy-blue.png">
+             <span>0</span>
+          </div>
+      </div>
+      <div class="flex-fill2">
+          <div class="off-text1">Trophies Redeemed - 0</div>
+          <div class="off-text2">
+            <button  type="button" class="submit_button" [routerLink]="['/admin/catalogue-reward/reward']">Redeem Now</button>
+          </div>
+      </div>
+    </div>
+
+    <app-dashboard-tabs *ngIf="selectedIndex$"
+      [rolenamedata]='rolename$.asObservable()'
+      [selectedIdx]='selectedIndex$.asObservable()'
+      [getChartData]="getChartData$.asObservable()"
+      (tabEvent)="tabDetails($event)"></app-dashboard-tabs>
+
+</div>
+
+<!-- Table  -->
+<div style="margin-top: 40px; display: flex; justify-content: space-between; align-items: center;">
+  <app-header-bar [title]="niyatStatusName + ' Niyats'"  [hideButton]="true"></app-header-bar>
+
+  <!-- Search input removed: handled by app-table-and-search -->
+</div>
+<div class="table_wrap">
+  <app-table-and-search
+    [filteration_data]="tableFilterationData"
+    [state_data]="tableStateData"
+    [self_search]="tableSelfSearch"
+    (onNextItem)="handleNextItem($event)"
+    (onBack)="handleBack($event)"
+    (onMonthChange)="handleTableMonthChange($event)"
+    (tableRecord)="fetchedRecord($event)"
+  ></app-table-and-search>
+</div>

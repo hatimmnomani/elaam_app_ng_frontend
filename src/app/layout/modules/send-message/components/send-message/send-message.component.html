@@ -1,0 +1,54 @@
+<!--Start admin Send  Message page -->
+<div class="heading_bar">
+    <h1>Send Message</h1>
+</div>
+<div class="add_department_form">
+    <div class="department_form">
+        <div class="send_option">
+            <div class="list_check" *ngFor="let role of roleList">
+                <mat-checkbox (change)="onCheckboxChange($event, role.name)" [checked]="role.isSelected">{{ role.name == 'Aamil' ? 'Aamil Saheb' : role.name }}</mat-checkbox>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="showMesage input_box" *ngIf="showMessageBox">
+            <p>{{ messageForAll }}</p>
+        </div>
+        
+        <div class="send_option" *ngIf="showRoles">
+            <app-smart-search (searchEvent)="searchData($event)" [list]="searchList"></app-smart-search>
+    
+            <div class="clearfix"></div>
+
+            <div class="send_wd_1" *ngFor="let data of displayData;">
+                <div class="list_check">
+                    <mat-checkbox [checked]="data.checked" (change)="onCheckboxIDs($event, data)">{{ data.name }}</mat-checkbox>
+                </div>
+            </div>
+            <div class="mt_search" *ngIf="hideLoadMore == true">
+                <button class="submit_button" (click)="showMore()">Show More</button>
+            </div>
+        </div>
+
+        <form [formGroup]="sendMessageForm">
+            <div class="input_box full_th">
+                <label for="exampleInputEmail1">Subject<span class="astrick">*</span></label>
+                <mat-form-field apperance="fill">
+                    <input matInput type="search" autocomplete="off" formControlName="subject" class="umoorNameinput-control">
+                    <mat-error  *ngIf="!f.subject.valid">{{validationMessages.subject}}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="txt_area full_wd">
+                <label for="exampleInputEmail1">Message<span class="astrick">*</span></label>
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <textarea matInput placeholder="Enter Message" formControlName="message"></textarea>
+                    <mat-error *ngIf="!f.message.valid">{{validationMessages.messageText}}</mat-error>
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
+    <div class="botton_button">
+        <button type="button" class="cancel_button submit_button" (click)="openDialog()">Cancel</button>
+        <button type="button" class="submit_button" (click)="sendMessage()">Send</button>
+    </div>
+</div>
+<!--end admin Send  Message page -->

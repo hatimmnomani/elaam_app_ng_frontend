@@ -1,0 +1,7 @@
+
+
+<div echarts class="demo-chart" [options]="options"></div>
+<div class="legends" *ngIf="totalData">
+  <p *ngFor="let data of legends"><span [style.background]="data.color"
+      class="dot"></span>{{data.name}}</p>
+</div>

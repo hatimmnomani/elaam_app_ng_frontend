@@ -1,0 +1,31 @@
+
+.demo-chart {
+  // height: 230px;
+  // width: 400px;
+  width: auto;
+  // height: 275px !important;
+}
+// ::ng-deep{
+//   .legend-labels{
+//     background: none !important;
+//   }
+// }
+
+.legends {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    padding-left: 20px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    .dot {
+      height: 10px;
+      width: 10px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+  }
+}

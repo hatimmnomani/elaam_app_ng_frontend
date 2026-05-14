@@ -1,0 +1,34 @@
+<div class="send_msg_popup">
+  <mat-icon class="material-icons-outlined action_icon close_popup" (click)="onNoClick()">
+    close
+  </mat-icon>
+  <div class="qrCode" *ngIf="isQrCode===true">
+        <div class="department_form">
+            <img src={{images_urls}} alt="">
+        </div>
+    </div>
+  <div class="qrCode" *ngIf="isQrCode!==true">
+    <h3>Thank you for getting in touch! </h3>
+    <p>
+      We appreciate you contacting us. One of our colleagues will get back in touch with you soon! Have a great day!
+    </p>
+    <p>For more information visit</p>
+    <p>
+      <a href="https://www.elam53.com" target="_blank">https://www.elam53.com</a>
+    </p>
+    <p><b>Download Our App</b></p>
+    <div class="se_btn_wrap" fxLayoutAlign="center center">
+      <a href="https://play.google.com/store/apps/details?id=com.elaam.niyat&hl=en_US&pli=1" class="mtblr">
+        <img src="../../../../assets/images/images1.svg" alt="">
+      </a>
+      <a href="https://apps.apple.com/id/app/elaam/id1613886118" class="mtblr">
+        <img src="../../../../assets/images/download1.svg" alt="">
+      </a>
+    </div>
+  </div>
+ 
+  <div class="se_btn_wrap" fxLayoutAlign="center center" *ngIf="isQrCode===true">
+    <button type="button" class="submit_button mtblr"  (click)="printPdf()">Print</button>
+    <button type="button" class="submit_button mtblr" (click)="mnaulExpire(templateId)">Manual Expire</button>
+  </div>
+</div>

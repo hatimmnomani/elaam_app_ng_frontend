@@ -1,0 +1,20 @@
+<div class="search_list">
+  <mat-form-field class="example-full-width" appearance="fill">
+    <input type="text" placeholder="{{placeholder}}"  aria-label="Search" matInput [formControl]="searchControl" [matAutocomplete]="auto" (keyup)="onSelectionChangekey($event)" >
+    <i class="search_icon"><mat-icon aria-hidden="false" aria-label="Example search icon">search</mat-icon></i>
+    <i class="clearbtn" *ngIf="searchControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="emptySearch()">
+      <mat-icon>close</mat-icon>
+    </i>
+        
+    <mat-autocomplete  #auto="matAutocomplete" (optionSelected)="onSelectionChange($event)">
+      <ng-container *ngFor="let option of filteredOptions | async">
+        <mat-option *ngIf="userrole != 'Mumin'" [value]="option.question_eng || option.name || option.niyatName || option.departmentName || option.itsId ||  option.niyatId || option.itemTitle">
+          {{option.question_eng || option.name || option.niyatName || option.departmentName || option.itsId || option.itemTitle}}
+        </mat-option>
+        <mat-option *ngIf="userrole == 'Mumin'" [value]="option.question_eng || option.name || option.umoorName || option.niyatName || option.departmentName || option.itsId">
+          {{option.question_eng || option.name || option.umoorName || option.niyatName || option.departmentName || option.itsId }}
+        </mat-option>
+      </ng-container>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>

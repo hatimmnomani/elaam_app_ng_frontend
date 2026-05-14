@@ -1,0 +1,51 @@
+.mainConatiner {
+    width: 60%;
+    margin: 50px auto;
+    padding: 10px 10px 50px;
+    font-size: 14px;
+}
+.logo{
+    display: flex;
+}
+.mainConatiner h1 {
+    font-size: 15px;
+    
+}
+
+.mainConatiner p {
+   
+    color: #554c4c;
+    font-family: 'Roboto', "Helvetica Neue", sans-serif;
+}
+
+.mainConatiner ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    justify-content: center;
+
+
+}
+
+.mainConatiner ul li {
+    margin: 15px 0px;
+   
+    color: #554c4c;
+    line-height: 20px;
+}
+
+.mainConatiner ul li span {
+    font-weight: 600;
+}
+
+.mainConatiner ul li.colorBlack {
+    font-weight: 600;
+}
+.underLine{
+    text-decoration: underline;
+}
+@media (max-width: 778px) {
+    .mainConatiner {
+        width: 80%;
+    }
+  }

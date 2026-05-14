@@ -1,0 +1,6 @@
+<app-header-bar [title]="'Niyat Templates List'"  [path]="'/admin/niyat-template/add'" [buttonName]="'Create Template'" ></app-header-bar>
+
+
+<div class="table_wrap">
+  <app-smart-table [columns]="columnsHeader" [receivedData]="templateList" (tableRecord)="fetchedRecord($event)" [editBtn]="true" [statusBtn]="true" [downloadBtn]="true" [qrCodeScanBtn]="true" [cloneBtn]="true"></app-smart-table>
+</div>

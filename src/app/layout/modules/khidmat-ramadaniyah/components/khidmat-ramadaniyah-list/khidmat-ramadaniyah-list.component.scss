@@ -1,0 +1,42 @@
+.table_wrap {
+  margin-top: 10px;
+}
+
+
+
+::ng-deep {
+  /* Assign Role Button in Header Bar */
+  .add_department button.add_department {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      filter: brightness(1.05);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  /* Edit and Update icons in Smart Table */
+  .action_icon {
+    transition: all 0.2s ease-in-out !important;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.2);
+      color: #b8320a; /* Highlighting color */
+    }
+  }
+
+  /* Action cell buttons general hover */
+  .action-cell button.mat-icon-button {
+      transition: background-color 0.2s ease-in-out;
+      &:hover {
+          background-color: rgba(184, 50, 10, 0.05);
+      }
+  }
+}

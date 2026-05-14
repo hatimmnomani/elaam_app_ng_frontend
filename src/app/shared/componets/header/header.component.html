@@ -1,0 +1,99 @@
+
+<mat-toolbar>
+    <div class="mobile_menu" *ngIf="isQrCode==='true'">
+        <a><img src="../assets/images/logo.png" alt="" style="width: 39px;padding: 31px 31px;" /></a>
+    </div>
+   
+    <div class="mobile_menu" *ngIf="isQrCode!=='true'">
+        <button *ngIf="mobileQuery?.matches" class="menu_icon" mat-icon-button (click)="toggleSidenav()">
+            <mat-icon>menu</mat-icon>
+        </button>
+    </div>  
+
+    <div layout="row">
+        <div class="header_menu">
+            <ul *ngIf="isQrCode!=='true'">
+                <!-- <li>
+                    <div class="top_search">
+                        <form class="example-form">
+                            <mat-form-field class="example-full-width" appearance="fill">
+                                <input matInput placeholder="Search" value="" autocomplete="off">
+                                <i class="search_icon"><mat-icon aria-hidden="false" aria-label="Example search icon">search</mat-icon></i>
+                            </mat-form-field>
+                        </form>
+                    </div>
+                </li> -->
+
+                <li *ngIf="(this.userrole === 'Umoor Coordinator' || this.userrole === 'Aamil' || userrole === 'Jamiat Masool' || userrole === 'Khidmat Ramadaniyah' || userrole === 'Muavin Aamil') && showSwitchUser && displayData.length > 1" class="dropdown-list-item">
+                    <div class="modern-dropdown-container">
+                        <label class="dropdown-persistent-label">{{ userrole === 'Umoor Coordinator' ? 'Umoor Name' : 'Jamaat Name' }}</label>
+                        <div class="dropdown-content-inner">
+                            <div class="select_umoor_jamaat top_select_bar modern-select">
+                                <mat-form-field appearance="fill">
+                                    <mat-select (selectionChange)="setNewVal($event.value)" [(value)]="selectedVal" panelClass="premium-dropdown-panel" class="modern-select">
+                                        <mat-option *ngFor="let data of displayData" [value]="data.id">{{ data.name }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                
+                <li *ngIf="this.userrole == 'Super Admin'">
+                    <div class="send_msg img_send">
+                        <a routerLink="/send-message">
+                            <img src="../assets/images/sent.svg" alt="Send Message" />
+                            <!-- <mat-icon aria-hidden="false" aria-label="Example send icon" class="icon_role">send</mat-icon> -->
+                        </a>
+                    </div>
+                </li>
+                <li *ngIf="!(this.userrole === 'Data Entry Operator' || this.userrole === 'Template Creator')">
+                    <div class="send_msg" >
+                        <button mat-icon-button [matMenuTriggerFor]="menu_notification" aria-label="Example icon-button with a menu">
+                           <a> <mat-icon aria-hidden="false" aria-label="Example notifications_none icon">notifications_none</mat-icon></a>
+                          </button>
+                          <mat-menu #menu_notification="matMenu" class="notifiation-list">
+                            <div class="scroll_fxt" >
+                                <ng-container *ngFor="let data of (notification  | async), let i = index">
+                                        <button *ngIf="i < 5" [ngClass]="{'read':data.read === true,'unread':data.read === false}" (click)="getReadNotification(data.id)" mat-menu-item >
+                                            <div class="text_section textLeft" [routerLink]="'notification'">
+                                                {{data.message.replace(toReplace, '')}}
+                                                <div class="notification_time">{{getTime(data.duration)}}</div>
+                                            </div>
+                                        </button>
+                                </ng-container>  
+                            </div>
+                            <div class="txt_section">
+                                <button routerLink="/notification"> View all notification</button> 
+                            </div>
+                          </mat-menu>
+                        <i class="bell_beg" *ngIf="badge$" matBadge="{{(badge$ | async)}}" matBadgeColor="warn"></i>
+                        
+                    </div>
+                </li>
+                <li>
+                    <div class="profile_down send_msg">
+                        <!-- <a (click)="navigatetoDefault()"><img src="../assets/images/profile_img.png" alt="" /></a> -->
+                        <div class="log_down">
+                            <button mat-button [matMenuTriggerFor]="menu"> <span> {{ username | titlecase }}</span> <mat-icon aria-hidden="false" aria-label="Example keyboard_arrow_down icon">keyboard_arrow_down</mat-icon></button>
+                        
+                            <mat-menu #menu="matMenu" class="top_menu">
+                                <button mat-menu-item  *ngIf="switchedtoUser != null"  (click)="switchUser()"><mat-icon aria-hidden="false">logout</mat-icon>
+                                Switch to 
+  {{
+    switchedtoUser[0].authority === 'Aamil' 
+      ? 'Aamil Saheb' 
+      : switchedtoUser[0].authority === 'Muavin Aamil' 
+        ? 'Muawin Aamil Saheb' 
+        : switchedtoUser[0].authority
+  }}
+                              </button>
+                                <button mat-menu-item  (click)="logout()"><mat-icon aria-hidden="false">logout</mat-icon>Logout</button>
+                            </mat-menu>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</mat-toolbar>

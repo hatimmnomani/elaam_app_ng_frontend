@@ -1,0 +1,40 @@
+<div class="example-container body_container" [class.example-is-mobile]="mobileQuery?.matches">
+    <mat-sidenav-container class="example-container" [style.marginTop.px]="mobileQuery?.matches ? 0 : 0">
+        <mat-sidenav #sidenav mode="side" class="left_side_bar" [mode]="mobileQuery.matches ? 'side' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="5" [(opened)]="opened" (opened)="open()" (closed)="close()">
+            
+            <!--Left Section Start-->
+            <app-sidebar></app-sidebar>
+            <!--Left Section End-->
+
+        </mat-sidenav>
+        <mat-sidenav-content>
+            <div class="main_dash1">
+
+            <!--Top Section Start-->
+            <app-header></app-header>
+            <!--Top Section End-->
+            
+            <!--Mid Section Start-->
+            <div class="container">
+                <div class="main_dash">
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+            <!--Mid Section End-->
+            
+            <!--Footer Section Start-->
+            <app-footer></app-footer>
+            <!--Footer Section End-->
+        </div>
+
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
+
+<ng-container *ngIf="spinnerServiceSr.visibility">
+<ng-container *ngIf="spinnerServiceSr.visibility | async">
+    <div class="center-align-spinner">
+        <mat-spinner [diameter]="70"  mode="indeterminate"></mat-spinner>loading...
+    </div>
+</ng-container>
+</ng-container>
