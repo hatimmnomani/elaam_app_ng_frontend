@@ -19,9 +19,11 @@ jobs:
           node-version: '16'
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Build (production)
+        env:
+          NODE_OPTIONS: --max-old-space-size=3072
         run: npx ng build --configuration=production
 
       - name: Deploy to /var/www/aelaam53.com
