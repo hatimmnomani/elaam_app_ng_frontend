@@ -1,0 +1,30 @@
+name: Deploy to aelaam53.com
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build (production)
+        run: npx ng build --configuration=production
+
+      - name: Deploy to /var/www/aelaam53.com
+        run: |
+          rm -rf /var/www/aelaam53.com/*
+          cp -a dist/elaam/. /var/www/aelaam53.com/
