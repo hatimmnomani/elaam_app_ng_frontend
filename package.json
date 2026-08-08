@@ -2,13 +2,13 @@
   "name": "elaam",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "sonar": "sonar-scanner"
-  },
+  "ng": "ng",
+  "dev": "NODE_OPTIONS=--openssl-legacy-provider ng serve",
+  "build": "NODE_OPTIONS=--openssl-legacy-provider ng build",
+  "watch": "NODE_OPTIONS=--openssl-legacy-provider ng build --watch --configuration development",
+  "test": "NODE_OPTIONS=--openssl-legacy-provider ng test",
+  "sonar": "sonar-scanner"
+},
   "private": true,
   "dependencies": {
     "@angular/animations": "^12.2.13",

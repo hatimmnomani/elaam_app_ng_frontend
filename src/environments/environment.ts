@@ -5,7 +5,9 @@
 export const environment = {
   production: true,
   loginFlag: 'simple',
-  serverUrl: 'https://qa-elaam-backend.demoapplication.net',
+  // serverUrl: 'https://qa-elaam-backend.demoapplication.net',
+  // serverUrl: 'https://elaamapi.digitaltakeoff.in',
+  serverUrl: 'https://prod-backend.aelaam53.com',
   redirectionURL: "https://www.its52.com/Login.aspx?OneLogin=ELAAM",
   quizApiUrl: "https://qa-elaam.demoapplication.net/quiz-backend",
   quizFrontendUrl: "http://54.212.208.192:5173"

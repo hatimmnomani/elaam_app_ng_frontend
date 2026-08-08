@@ -187,7 +187,7 @@ export class LoginComponent implements OnInit {
       if (this.routerUrl.includes('admin')) {
         this.isMumin = false
       } else {
-        this.isMumin = true
+        this.isMumin = false
       }
       obj = { 'itsId': itsId, 'password': password, 'isMumin': this.isMumin }
     } else {
