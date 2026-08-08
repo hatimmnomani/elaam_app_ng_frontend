@@ -128,7 +128,7 @@
                   update
                 </mat-icon>
               </button>
-              <button [ngClass]="column.dataClass" *ngIf="scan && userrole!=='Umoor Coordinator'" mat-icon-button (click)="updateRow(row, 'scan')" [title]="'Scan'">
+              <button [ngClass]="column.dataClass" *ngIf="scan && userrole!=='Umoor Coordinator'" mat-icon-button (click)="updateRow(row, 'scan')" [title]="'View Niyat Form'">
                 <img class="action_icon" src="../assets/images/view_niyat.png" >
                 <!-- <mat-icon class="material-icons-outlined action_icon" >
                   scan
@@ -142,7 +142,7 @@
               </button>
   
               <button [ngClass]="column.dataClass" *ngIf="centerFocusinfo" mat-icon-button>
-                <mat-icon class="material-icons-outlined action_icon" (click)="updateRow(row, 'centerFocusinfo')" [title]="'Info'">
+                <mat-icon class="material-icons-outlined action_icon" (click)="updateRow(row, 'centerFocusinfo')" [title]="'Open Niyat'">
                   filter_center_focus
                 </mat-icon>
               </button>

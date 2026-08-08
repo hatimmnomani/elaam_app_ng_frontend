@@ -174,7 +174,7 @@ export class SidebarComponent implements OnInit {
         route: "mumin-dashboard",
       },
       {
-        name: "Catalogue",
+        name: "Jawaaiz (Prizes)",
         img: "cat.png",
         actimg: "menu_active_icon/cateloge_active.png",
         route: "/catalogue",
@@ -198,7 +198,7 @@ export class SidebarComponent implements OnInit {
         route: "/admin/niyat-data",
       },
       {
-        name: "Niyat Form Count",
+        name: "Digital Niyat Form",
         img: "dashboard.png",
         actimg: "dashboard_active.png",
         route: "/admin/niyatCount",
@@ -260,7 +260,7 @@ export class SidebarComponent implements OnInit {
         route: "/admin/dashboard",
       },
       {
-        name: "Catalogue",
+        name: "Jawaaiz (Prizes)",
         img: "cat.png",
         actimg: "menu_active_icon/cateloge_active.png",
         route: "/admin/catalogue-reward",
@@ -338,7 +338,7 @@ export class SidebarComponent implements OnInit {
         route: "/admin/qardan-hasanah",
       },
       {
-        name: "Catalogue",
+        name: "Jawaaiz (Prizes)",
         img: "cat.png",
         actimg: "menu_active_icon/cateloge_active.png",
         route: "/admin/catalogue",
@@ -398,7 +398,7 @@ export class SidebarComponent implements OnInit {
         route: "/admin/niyat-data",
       },
       {
-        name: "Niyat Form Count",
+        name: "Digital Niyat Form",
         img: "dashboard.png",
         actimg: "dashboard_active.png",
         route: "/admin/niyatCount",
