@@ -8,7 +8,7 @@ import { SharedataService } from './shared/services/sharedata.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'elaam';
+  title = 'aelaam';
 
   constructor(
     private localService: LocalStorageService,
