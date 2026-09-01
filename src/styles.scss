@@ -626,6 +626,14 @@ input:-webkit-autofill:focus {
   border: $card-border;
   @include gradient;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.box_wrap:hover {
+  transform: translateY(-4px);
+  box-shadow: 8px 10px 13px 1px rgba(0, 0, 0, 0.35);
+}
+.box_wrap.active:hover {
+  transform: translateY(-4px);
 }
 
 .content_wrap {
