@@ -71,6 +71,75 @@ $fsize: 14px;
   ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$button-color', endColorstr='#fff7dc',GradientType=0 ); /* IE6-9 */
 }
+
+/*--------Button interaction animations-----*/
+// Lift + glow feedback for rectangular CTA-style buttons (submit, download, login, etc.)
+@mixin interactive-button {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+  will-change: transform;
+  &:hover:not(:disabled):not(.button_disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.22);
+    filter: brightness(1.06);
+  }
+  &:active:not(:disabled):not(.button_disabled) {
+    transform: translateY(-1px) scale(0.97);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.18);
+    filter: brightness(0.98);
+  }
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(185, 51, 10, 0.35), 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  &:disabled,
+  &.button_disabled {
+    transform: none;
+    filter: none;
+  }
+}
+
+// Diagonal shine sweep on hover, layered on top of interactive-button for primary CTAs
+@mixin shine-sweep {
+  position: relative;
+  overflow: hidden;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -60%;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.55) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-20deg);
+    transition: left 0.55s ease;
+    pointer-events: none;
+  }
+  &:hover::before {
+    left: 130%;
+  }
+}
+
+// Scale + rotate feedback for round icon buttons (edit, view, close, send)
+@mixin interactive-icon($hover-rotate: 0deg) {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  &:hover {
+    transform: scale(1.12) rotate(#{$hover-rotate});
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  &:active {
+    transform: scale(0.95) rotate(#{$hover-rotate});
+  }
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(185, 51, 10, 0.35);
+  }
+}
+
 /*--------Border variable-----*/
 $divider: 1px solid #f5f6f5;
 $card-border: 1px solid #f0c457;
@@ -242,6 +311,8 @@ input:-webkit-autofill:focus {
   width: 100%;
   border: $card-border;
   @include gradient;
+  @include interactive-button;
+  @include shine-sweep;
 }
 .mat-form-field-type-mat-native-select.mat-focused:not(.mat-form-field-invalid)
   .mat-form-field-infix::after {
@@ -505,6 +576,7 @@ input:-webkit-autofill:focus {
     height: 34px;
     width: 34px;
     text-align: center;
+    @include interactive-icon;
     .mat-icon {
       color: #fff;
       vertical-align: middle;
@@ -857,6 +929,8 @@ input:-webkit-autofill:focus {
   width: 100%;
   border: $card-border;
   @include gradient;
+  @include interactive-button;
+  @include shine-sweep;
 }
 
 .action_icon {
@@ -956,6 +1030,8 @@ input:-webkit-autofill:focus {
   padding: 8px 20px;
   border: $card-border;
   @include gradient;
+  @include interactive-button;
+  @include shine-sweep;
 }
 
 .submit_button.cancel_button {
@@ -1144,6 +1220,8 @@ input:-webkit-autofill:focus {
   padding: 5px 15px;
   border: $card-border;
   @include gradient;
+  @include interactive-button;
+  @include shine-sweep;
 }
 .d_download.c_cancel {
   margin-right: 10px;
@@ -1273,6 +1351,8 @@ input:-webkit-autofill:focus {
   word-break: normal;
   text-decoration: none;
   margin-right: 20px;
+  display: inline-block;
+  @include interactive-button;
 }
 .option_next {
   text-align: right;
@@ -1466,6 +1546,7 @@ input:-webkit-autofill:focus {
     color: #0f0e0e;
     border: $card-border;
     @include gradient;
+    @include interactive-button;
   }
   .text_choose {
     margin-top: -22px;
@@ -1520,6 +1601,8 @@ input:-webkit-autofill:focus {
   border-bottom-right-radius: 20px;
   border-bottom-left-radius: 20px;
   @include gradient;
+  @include interactive-button;
+  @include shine-sweep;
  &.cusortype{
   font-weight: 600;
   padding: 15px 0;
@@ -1578,9 +1661,7 @@ input:-webkit-autofill:focus {
   display: flex;
     justify-content: center;
     align-items: center;
-  display: flex;
-    justify-content: center;
-    align-items: center;
+  @include interactive-icon(15deg);
   .mat-icon {
     margin: 3px auto;
   }
@@ -1716,6 +1797,7 @@ input:-webkit-autofill:focus {
   text-decoration: none;
   display: block;
   border: 1px solid #a22d07;
+  @include interactive-button;
 }
 .time_txt {
   border: 2px solid #a22d07;
@@ -2243,6 +2325,7 @@ input:-webkit-autofill:focus {
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.4);
   z-index: 9999;
   margin-right: 0 !important;
+  @include interactive-icon(90deg);
 }
 .conform_p {
   text-align: center;
@@ -2303,6 +2386,15 @@ input:-webkit-autofill:focus {
       font-size: 16px;
       color: #b73509;
       padding-left: 16px;
+      transition: color 0.18s ease, transform 0.18s ease;
+      &:hover {
+        color: #83290b;
+        transform: translateX(2px);
+      }
+      &:focus-visible {
+        outline: none;
+        text-decoration: underline;
+      }
     }
   }
   .mat-menu-content:not(:empty) {
@@ -2351,6 +2443,8 @@ button.bntAcknowledge {
   background: #e5b43b;
   background: linear-gradient(to top, #e5b43b 0%, #fff7dc 100%);
   margin-left: 20px;
+  @include interactive-button;
+  @include shine-sweep;
 }
 .send_checkbox {
 }
@@ -2711,6 +2805,7 @@ button.bntAcknowledge {
   margin: 10px;
   float: left;
   cursor: pointer;
+  @include interactive-icon;
   img{
       border-radius: 50%;
       height: 30px;
@@ -2761,6 +2856,27 @@ button.bntAcknowledge {
   transform: scale(0) !important;
 }
 .mat-button-focus-overlay{
- 
+
   background-color: #f5f0e008;
+}
+.mat-icon-button {
+  transition: transform 0.18s ease, color 0.18s ease;
+  &:hover:not(:disabled) {
+    transform: scale(1.15);
+  }
+  &:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+}
+.mat-raised-button,
+.mat-flat-button,
+.mat-stroked-button {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease !important;
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+  }
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.97);
+  }
 }
