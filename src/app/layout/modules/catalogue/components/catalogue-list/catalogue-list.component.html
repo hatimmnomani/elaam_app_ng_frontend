@@ -56,6 +56,77 @@
                 </div>
 
             </mat-tab>
+            <!-- <mat-tab label="Prizes Redeemed">
+                <div class="add_department_form">
+                    <div class="search_list">
+                        <mat-form-field class="example-full-width" appearance="fill">
+                            <input matInput class="searchInput" placeholder="Search by ITS ID / Name / Prize Name"
+                                [formControl]="prizeSearchControl" (keyup)="searchPrizes($event)" />
+                            <i class="search_icon"><mat-icon aria-hidden="false" aria-label="search">search</mat-icon></i>
+                            <i class="clearbtn" *ngIf="prizeSearchControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="emptyPrizeSearch()">
+                                <mat-icon>close</mat-icon>
+                            </i>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="fill" class="ack_filter">
+                            <mat-select placeholder="Acknowledgement Status" [(ngModel)]="acknowledgementFilter" (selectionChange)="onAcknowledgementFilterChange($event)">
+                                <mat-option value="">All</mat-option>
+                                <mat-option value="true">Acknowledged</mat-option>
+                                <mat-option value="false">Pending</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="downloadbutton">
+                        <app-download-files-button
+                            [dataList]="redeemedPrizesList$.asObservable()"
+                            [downloadtitle]="downloadButtonTitle"
+                            [getHeader]="sendHeader"
+                            [getTableId]="sendTableId"
+                            [getTitle]="sendTitle"
+                            [buttonText]="'Prizes Redeemed'"
+                            [getFileName]="sendFileName"
+                            [showCSV]="false"
+                            (sendData)="downloadRedeemedPrizesExcel()">
+                        </app-download-files-button>
+
+                        <button class="All_Selected"
+                            (click)="openConfirmation()"
+                            [disabled]="checkboxSelectedVal.length === 0"
+                            [ngClass]="{'disabled-btn': checkboxSelectedVal.length === 0}">
+                            Acknowledge All
+                        </button>
+                    </div>
+
+                    <div class="table_wrap">
+                        <app-server-side-smart-table
+                            [columns]="redeemedPrizesColumns"
+                            [service]="redeemedPrizesService"
+                            [isAcknowledged]="true"
+                            [searchStr]="prizeQuery"
+                            [filters]="redeemedPrizesFilters"
+                            (tableRecord)="fetchedPrizeRecord($event)"
+                            (tableParams)="onRedeemedPrizesParamsChange($event)">
+                        </app-server-side-smart-table>
+                    </div>
+                </div>
+
+                <div *ngIf="showConfirmation">
+                    <div class="send_msg_popup conform_p" style="border: 4px solid white; padding: 20px; border-radius: 8px; background-color: #222;">
+                        <div class="close_popup closeconfirm">
+                            <mat-icon (click)="closeConfirmation()">close</mat-icon>
+                        </div>
+                        <h3>Confirmation Message</h3>
+                        <div class="detail_sub conform_p">
+                            <p>Are you sure you want to acknowledge all selected items?</p>
+                        </div>
+                        <div class="botton_button">
+                            <button type="button" class="submit_button" (click)="confirmAction()">Yes</button>
+                            <button type="button" class="cancel_button submit_button" (click)="closeConfirmation()">No</button>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab> -->
         </mat-tab-group>
     </div>
 </div> 

@@ -58,6 +58,8 @@ export class ServerSideSmartTableComponent implements OnInit, AfterViewInit {
 
   @Output() tableRecord = new EventEmitter<any>();
 
+  @Output() tableParams = new EventEmitter<any>();
+
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
   @Input() displayedColumns!: string[];
@@ -469,8 +471,10 @@ isIndeterminate(): boolean {
       }
     }
 
+    this.tableParams.emit(params);
+
     this.spinner.show();
-    
+
     this.service.getList(params).subscribe((data: any) => {
       this.spinner.hide();
       if (data.list && data.list?.length > 0) {
