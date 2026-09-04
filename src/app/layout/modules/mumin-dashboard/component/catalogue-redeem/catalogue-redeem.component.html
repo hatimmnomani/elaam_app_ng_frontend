@@ -8,8 +8,8 @@
                 <img src="../assets/images/trophy.png" alt="" />
                 <div class="txt_overlay"><p>{{(redeemTrophiesData$ | async).trophiesRedeemed + (redeemTrophiesData$ | async).remainingTrophies}}</p></div>
             </div>
-            <p>Trophies Redeemed - {{(redeemTrophiesData$ | async).trophiesRedeemed}}</p>
-            <p>Trophies Balance - {{(redeemTrophiesData$ | async).remainingTrophies}}</p>
+            <p>Trophies Redeemed - {{(redeemTrophiesData$ | async).trophiesRedeemed}} points</p>
+            <p>Trophies Balance - {{(redeemTrophiesData$ | async).remainingTrophies}} points</p>
         </div>
     </div>
 </div>
@@ -30,7 +30,7 @@
                                     <div class="catalogue_circle" (click)="catalogueInfo(data.itemTitle, data.description)">
                                         <img [src]="data?.image_url?data?.image_url : imgPath" alt=""  />
                                     </div>
-                                    <h4 class="trophy-number">{{data.trophies || '-' }}</h4> 
+                                    <h4 class="trophy-number">{{data.trophies || '-' }} points</h4> 
                                     <button class="cusortype" (click)="redeemConfirm(data)">{{data.itemTitle.substring(0, 20) || '-' }}</button>
                                 </div>
                             </div>
