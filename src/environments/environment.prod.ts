@@ -3,7 +3,8 @@ export const environment = {
   loginFlag: 'onelogin',
   serverUrl: 'https://prod-backend.aelaam53.com',
   redirectionURL: 'https://www.its52.com/Login.aspx?OneLogin=ELAAM',
-  //quizApiUrl: "https://www.elam53.com/quiz-backend",
+  // Deprecated: the standalone quiz backend. Quiz access now comes from the NTMS API
+  // at serverUrl (/api/quiz/**); nothing reads quizApiUrl anymore.
   quizApiUrl: "https://quiz-backend.elam53.com",
-  quizFrontendUrl: "https://www.elam53.com/quiz"
+  quizFrontendUrl: "https://quiz.aelaam53.com"
 };
