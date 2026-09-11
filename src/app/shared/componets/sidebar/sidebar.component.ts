@@ -52,9 +52,12 @@ export class SidebarComponent implements OnInit {
   }
 
 
-  isActive(item: any): boolean {
-    // Neither quiz entry is a real Angular route - both navigate away to the quiz SPA.
-    return !['quiz', 'quiz-admin'].includes(item.route) && this.router.url === item.route;
+  /**
+   * Both quiz entries navigate away to the quiz SPA, so they must not get a routerLink -
+   * neither is a registered Angular route.
+   */
+  isExternalLink(item: any): boolean {
+    return ['quiz', 'quiz-admin'].includes(item?.route);
   }
 
   /******************************************************************************
