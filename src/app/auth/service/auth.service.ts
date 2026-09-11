@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 
 import { LocalStorageService } from './storage/localstorage.service';
 import { SharedataService } from 'src/app/shared/services/sharedata.service';
+import { QuizService } from 'src/app/shared/services/quiz.service';
 
 
 @Injectable({
@@ -15,7 +16,7 @@ import { SharedataService } from 'src/app/shared/services/sharedata.service';
 export class AuthService {
   loggedInUser: any;
 
-  constructor(private LocalService: LocalStorageService, private http: HttpClient, private sharedataService: SharedataService) { }
+  constructor(private LocalService: LocalStorageService, private http: HttpClient, private sharedataService: SharedataService, private quizService: QuizService) { }
 
 
 
@@ -76,6 +77,8 @@ export class AuthService {
       this.sharedataService.clearSelectedMonthValue();
       this.sharedataService.clearDashboardState();
     } catch { /* noop */ }
+    // Without this, a second login in the same tab reuses the first user's cached quiz access.
+    this.quizService.reset();
     this.LocalService.clear();
   }
 

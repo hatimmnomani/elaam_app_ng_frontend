@@ -29,21 +29,32 @@ export class SidebarComponent implements OnInit {
     const data = JSON.parse(this.userRole)
     this.getRoles(data);
 
-    this.quizService.getQuizEligibility().subscribe(isEligible => {
-      if (isEligible) {
+    this.quizService.getQuizProfile().subscribe(profile => {
+      if (!profile) {
+        return;                      // not enrolled - no quiz nav at all
+      }
+      // Admins get both: they take the quiz as participants AND author it.
+      if (profile.role === 'ADMIN') {
         this.navLinks.unshift({
-          name: "Quiz",
+          name: "Quiz Admin",
           img: "question.png",
           actimg: "question.png",
-          route: "quiz"
+          route: "quiz-admin"
         });
       }
+      this.navLinks.unshift({
+        name: "Quiz",
+        img: "question.png",
+        actimg: "question.png",
+        route: "quiz"
+      });
     });
   }
 
 
   isActive(item: any): boolean {
-    return item.route !== 'quiz' && this.router.url === item.route;
+    // Neither quiz entry is a real Angular route - both navigate away to the quiz SPA.
+    return !['quiz', 'quiz-admin'].includes(item.route) && this.router.url === item.route;
   }
 
   /******************************************************************************
@@ -55,12 +66,8 @@ export class SidebarComponent implements OnInit {
    *
    ******************************************************************************/
   onNavClick(item: any): boolean {
-    if (item.route === 'quiz') {
-      const token = this.LocalService.get('token');
-      const name = this.LocalService.get('name');
-      const role = this.LocalService.get('role');
-      const currentUrl = window.location.href;
-      window.location.href = `${environment.quizFrontendUrl}?token=${token}&name=${name}&role=${role}&redirectUrl=${encodeURIComponent(currentUrl)}`;
+    if (item.route === 'quiz' || item.route === 'quiz-admin') {
+      this.openQuizPortal();
       return false;
     }
     const route = String(item?.route ?? '').toLowerCase();
@@ -70,6 +77,28 @@ export class SidebarComponent implements OnInit {
     }
     this.clearDashboardFlowState();
     return true;
+  }
+
+  /******************************************************************************
+   *
+   * @brief hand the NTMS token to the quiz SPA and navigate to it.
+   *
+   *        The token goes in the URL *fragment*, not the query string: a fragment is
+   *        never sent to a server, so the token stays out of the quiz server's access
+   *        logs and out of the Referer header of every request the quiz page makes.
+   *
+   *        `name` and `role` are deliberately not passed - the quiz SPA calls
+   *        /api/quiz/auth/me itself, and a role passed through a URL is caller-controlled.
+   *        Both the "Quiz" and "Quiz Admin" entries open the same SPA, which routes to the
+   *        taker or the admin console based on that call.
+   * @param none
+   * return none
+   *
+   ******************************************************************************/
+  private openQuizPortal(): void {
+    const token = this.LocalService.get('token') ?? '';
+    const payload = new URLSearchParams({ token, returnUrl: window.location.href });
+    window.location.href = `${environment.quizFrontendUrl}#${payload.toString()}`;
   }
 
   /******************************************************************************

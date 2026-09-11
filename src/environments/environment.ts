@@ -9,8 +9,10 @@ export const environment = {
   // serverUrl: 'https://elaamapi.digitaltakeoff.in',
   serverUrl: 'https://prod-backend.aelaam53.com',
   redirectionURL: "https://www.its52.com/Login.aspx?OneLogin=ELAAM",
+  // Deprecated: the standalone quiz backend. Quiz access now comes from the NTMS API
+  // at serverUrl (/api/quiz/**); nothing reads quizApiUrl anymore.
   quizApiUrl: "https://qa-elaam.demoapplication.net/quiz-backend",
-  quizFrontendUrl: "http://54.212.208.192:5173"
+  quizFrontendUrl: "https://quiz.aelaam53.com"
 };
 
 
