@@ -6,10 +6,10 @@
     </div>
     <div class="menu_bar">
         <ul>
-            <li *ngFor="let item of navLinks" [routerLinkActive]="item.route !== 'quiz' ? 'active' : ''" #rla="routerLinkActive" [ngStyle]="rla.isActive && item.route !== 'quiz' ? {'background-image': 'url(../assets/images/active_menu_bar.png)'} : {}" >
-                <a [routerLink]="item.route !== 'quiz' ? item.route : null" (click)="onNavClick(item)">
-                    <span *ngIf="!rla.isActive || item.route === 'quiz'"><img src='../assets/images/{{item.img}}' /></span>
-                    <span *ngIf="rla.isActive && item.route !== 'quiz'" class="img_active_2"><img
+            <li *ngFor="let item of navLinks" [routerLinkActive]="item.route !== 'quiz-admin' ? 'active' : ''" #rla="routerLinkActive" [ngStyle]="rla.isActive && item.route !== 'quiz-admin' ? {'background-image': 'url(../assets/images/active_menu_bar.png)'} : {}" >
+                <a [routerLink]="item.route !== 'quiz-admin' ? item.route : null" (click)="onNavClick(item)">
+                    <span *ngIf="!rla.isActive || item.route === 'quiz-admin'"><img src='../assets/images/{{item.img}}' /></span>
+                    <span *ngIf="rla.isActive && item.route !== 'quiz-admin'" class="img_active_2"><img
                         src="../assets/images/{{item.actimg}}"
                         /></span>
                     {{item.name}}

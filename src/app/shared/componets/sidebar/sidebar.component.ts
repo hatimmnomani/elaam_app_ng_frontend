@@ -30,31 +30,25 @@ export class SidebarComponent implements OnInit {
     this.getRoles(data);
 
     this.quizService.getQuizProfile().subscribe(profile => {
-      if (!profile) {
-        return;                      // not enrolled - no quiz nav at all
-      }
-      // Admins get both: they take the quiz as participants AND author it.
-      if (profile.role === 'ADMIN') {
-        this.navLinks.unshift({
-          name: "Quiz Admin",
-          img: "question.png",
-          actimg: "question.png",
-          route: "quiz-admin"
-        });
+      // Quiz access is admin-only now: regular users get no quiz nav entry at all.
+      // Admins land on the quiz SPA's admin console and can switch to the taker
+      // view from there (its "Quiz View" button).
+      if (profile?.role !== 'ADMIN') {
+        return;
       }
       this.navLinks.unshift({
-        name: "Quiz",
+        name: "Quiz Admin",
         img: "question.png",
         actimg: "question.png",
-        route: "quiz"
+        route: "quiz-admin"
       });
     });
   }
 
 
   isActive(item: any): boolean {
-    // Neither quiz entry is a real Angular route - both navigate away to the quiz SPA.
-    return !['quiz', 'quiz-admin'].includes(item.route) && this.router.url === item.route;
+    // Not a real Angular route - it navigates away to the quiz SPA.
+    return item.route !== 'quiz-admin' && this.router.url === item.route;
   }
 
   /******************************************************************************
@@ -66,7 +60,7 @@ export class SidebarComponent implements OnInit {
    *
    ******************************************************************************/
   onNavClick(item: any): boolean {
-    if (item.route === 'quiz' || item.route === 'quiz-admin') {
+    if (item.route === 'quiz-admin') {
       this.openQuizPortal();
       return false;
     }
@@ -89,8 +83,8 @@ export class SidebarComponent implements OnInit {
    *
    *        `name` and `role` are deliberately not passed - the quiz SPA calls
    *        /api/quiz/auth/me itself, and a role passed through a URL is caller-controlled.
-   *        Both the "Quiz" and "Quiz Admin" entries open the same SPA, which routes to the
-   *        taker or the admin console based on that call.
+   *        The "Quiz Admin" entry opens the SPA, which routes admins to the admin
+   *        console (with a "Quiz View" switch for taking the quiz as a participant).
    * @param none
    * return none
    *
